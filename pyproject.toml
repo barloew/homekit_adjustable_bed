@@ -1,0 +1,56 @@
+[project]
+name = "homekit-bed"
+version = "4.7.0"
+description = "Publish an adjustable bed (ha-adjustable-bed) as one HomeKit accessory"
+requires-python = ">=3.14.2"
+dependencies = [
+    "HAP-python>=4.9.2",
+    "PyQRCode==1.2.1",
+    "base36==0.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "homeassistant>=2026.9.0",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.5",
+    "pytest-homeassistant-custom-component>=0.13.206",
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.5.0",
+]
+
+# Tooling follows kristofferR/ha-adjustable-bed so both projects can be
+# maintained the same way (and merged later without a style migration).
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501", "SIM102", "SIM105", "SIM108"]
+
+[tool.pyright]
+pythonVersion = "3.14"
+typeCheckingMode = "standard"
+include = ["custom_components", "tests"]
+reportIncompatibleVariableOverride = "none"
+reportUnusedImport = "none"
+
+[[tool.pyright.executionEnvironments]]
+root = "tests"
+extraPaths = ["."]
+reportTypedDictNotRequiredAccess = "none"
+reportOptionalMemberAccess = "none"
+reportAttributeAccessIssue = "none"
+reportOperatorIssue = "none"
+reportArgumentType = "none"
+reportOptionalOperand = "none"
+reportOptionalSubscript = "none"
+reportCallIssue = "none"
+reportIndexIssue = "none"

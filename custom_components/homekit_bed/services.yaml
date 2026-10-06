@@ -1,0 +1,14 @@
+reset_pairing:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        config_entry:
+          integration: homekit_bed
+push_captions:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        config_entry:
+          integration: homekit_bed

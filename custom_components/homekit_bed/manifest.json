@@ -1,0 +1,25 @@
+{
+  "domain": "homekit_bed",
+  "name": "HomeKit Bed Aggregator",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": [
+    "http",
+    "network",
+    "zeroconf"
+  ],
+  "documentation": "https://github.com/your-name/homekit_bed",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/your-name/homekit_bed/issues",
+  "loggers": [
+    "pyhap"
+  ],
+  "requirements": [
+    "HAP-python>=4.9.2",
+    "PyQRCode==1.2.1",
+    "base36==0.1.1"
+  ],
+  "single_config_entry": false,
+  "version": "4.7.0"
+}
