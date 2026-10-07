@@ -21,20 +21,24 @@
 
 ## The controls form
 
-Top to bottom:
+All blocks start collapsed; each name starts with an icon (Home Assistant shows no other icons
+for form sections).
 
 | Block | Contents |
 |---|---|
-| Adjustable sections | One slider per section (back, legs, tilt, lumbar, ...) |
-| Timed moves | Seconds per section (0 = off); see below |
-| Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
-| Massage | Strength sliders and on/off buttons |
-| Lighting | Bed lights, plus free slots for any Home Assistant light |
-| Climate, Firmness, Settings | Only when the bed has them |
-| Add controls | Everything the bed offers that is not in HomeKit |
-| Naming | The name of every control in the Home app, and *Enforce names* |
-| Display in HomeKit | *Inverted sliders* |
-| Layout | *First control (top left)* and the expected tile layout |
+| 🛏️ Adjustable sections | Beds with positions: two switches on top (timed buttons, exact sliders), then one slider per section |
+| ⏱️ Timed adjustments | Seconds per section (0 = off). Always for beds without positions; else when switched on |
+| ⚡ Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
+| 💆 Massage | Strength sliders and on/off buttons |
+| 💡 Lighting | Bed lights, plus free slots for any Home Assistant light |
+| 🌡️ Climate, 🎚️ Firmness, 🔧 Settings | Only when the bed has them |
+| ➕ Add controls | Everything the bed offers that is not in HomeKit |
+| 🏷️ Labels in HomeKit | The name of every control in the Home app, and *Enforce names* |
+| 👁️ Display in HomeKit | *Inverted sliders* (beds with positions only) |
+| 🔲 Layout in HomeKit | *First control (top left)* and the expected tile layout |
+
+Switching *timed buttons* or *exact sliders* and pressing Submit updates the form right away.
+With exact sliders off, the bed sections are only operated with the timed buttons.
 
 Every field holds the matched entity. The entity picker shows the device under each entity.
 

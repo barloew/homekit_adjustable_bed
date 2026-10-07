@@ -39,7 +39,9 @@ from .const import (
     CONF_OVERRIDES,
     CONF_PORT,
     CONF_PRIMARY,
+    CONF_SLIDERS,
     CONF_TIMED,
+    CONF_TIMED_ON,
     CONTROLS,
     CONTROLS_BY_KEY,
     DEFAULT_COLOR,
@@ -54,7 +56,15 @@ from .const import (
     SOURCE_DOMAINS,
     TIMED_MAX_SECONDS,
 )
-from .controls import Control, effective_controls, normalize_options, selected_ids
+from .controls import (
+    Control,
+    effective_controls,
+    normalize_options,
+    reports_position,
+    selected_ids,
+    timed_enabled,
+    timed_sections,
+)
 from .detection import DETECTION_GROUPS, DetectedControl, _bed_entries, detect_controls
 from .devices import child_device_ids, related_device_ids
 from .labels import async_control_names, async_default_labels, async_group_names
@@ -282,12 +292,19 @@ class BedControlsFormMixin:
                 model[CONF_INVERTED] = user_input[SECTION_DISPLAY][CONF_INVERTED]
             if CONF_PRIMARY in (user_input.get(SECTION_LAYOUT) or {}):
                 model[CONF_PRIMARY] = user_input[SECTION_LAYOUT][CONF_PRIMARY]
-            timed_in = user_input.get(SECTION_TIMED) or {}
-            model[CONF_TIMED] = {
-                key.removeprefix(TIMED_PREFIX): float(seconds)
-                for key, seconds in timed_in.items()
-                if seconds and float(seconds) > 0
-            }
+            if SECTION_TIMED in user_input:  # hidden section: keep the durations
+                model[CONF_TIMED] = {
+                    key.removeprefix(TIMED_PREFIX): float(seconds)
+                    for key, seconds in (user_input[SECTION_TIMED] or {}).items()
+                    if seconds and float(seconds) > 0
+                }
+            positions_in = user_input.get("positions") or {}
+            for key in (CONF_SLIDERS, CONF_TIMED_ON):
+                if key in positions_in and bool(positions_in[key]) != bool(
+                    model.get(key, key == CONF_SLIDERS or bool(model.get(CONF_TIMED)))
+                ):
+                    model[key] = bool(positions_in[key])
+                    moved = True  # show or hide the related fields right away
             model[CONF_HIDDEN] = sorted(hidden)
             model[CONF_ADDED] = sorted(added)
             model[CONF_OVERRIDES] = overrides
@@ -309,10 +326,18 @@ class BedControlsFormMixin:
 
         controls = effective_controls(self.hass, self._form_data(), model, labels, detected)
         in_homekit = {c.id for c in controls}
+        position_bed = reports_position(self.hass, detected)
         sections: dict[Any, Any] = {}
         shown: list[str] = []
         for group in DETECTION_GROUPS:
             fields: dict[Any, Any] = {}
+            if group == "positions" and position_bed:
+                fields[vol.Optional(CONF_TIMED_ON, default=timed_enabled(model, True))] = (
+                    selector.BooleanSelector()
+                )
+                fields[vol.Optional(CONF_SLIDERS, default=bool(model.get(CONF_SLIDERS, True)))] = (
+                    selector.BooleanSelector()
+                )
             members = [c for c in controls if c.group == group and not c.action]
             if group == "lighting":
                 # Free slots for any HA light (e.g. Hue next to / under the bed);
@@ -342,42 +367,40 @@ class BedControlsFormMixin:
                         selector.BooleanSelector()
                     )
             if fields:
-                sections[vol.Required(group)] = section(vol.Schema(fields), {"collapsed": False})
+                sections[vol.Required(group)] = section(vol.Schema(fields), {"collapsed": True})
         self._shown = shown
 
         # Timed moves: seconds per section, right after the sections.
         timed_now: dict[str, float] = model.get(CONF_TIMED) or {}
         timed_fields: dict[Any, Any] = {}
-        for control in controls:
-            source = by_id.get(control.id)
-            if control.action or source is None or source.timed_motor is None:
-                continue
-            timed_fields[
-                vol.Optional(
-                    f"{TIMED_PREFIX}{control.id}",
-                    default=float(timed_now.get(control.id, 0)),
+        if timed_enabled(model, position_bed):
+            for source in timed_sections(detected):
+                timed_fields[
+                    vol.Optional(
+                        f"{TIMED_PREFIX}{source.control_id}",
+                        default=float(timed_now.get(source.control_id, 0)),
+                    )
+                ] = selector.NumberSelector(
+                    selector.NumberSelectorConfig(
+                        min=0,
+                        max=TIMED_MAX_SECONDS,
+                        step=0.5,
+                        unit_of_measurement="s",
+                        mode=selector.NumberSelectorMode.BOX,
+                    )
                 )
-            ] = selector.NumberSelector(
-                selector.NumberSelectorConfig(
-                    min=0,
-                    max=TIMED_MAX_SECONDS,
-                    step=0.5,
-                    unit_of_measurement="s",
-                    mode=selector.NumberSelectorMode.BOX,
-                )
-            )
         if timed_fields:
             ordered: dict[Any, Any] = {}
             for marker, value in sections.items():
                 ordered[marker] = value
                 if str(marker) == "positions":
                     ordered[vol.Required(SECTION_TIMED)] = section(
-                        vol.Schema(timed_fields), {"collapsed": False}
+                        vol.Schema(timed_fields), {"collapsed": True}
                     )
             if not any(str(k) == SECTION_TIMED for k in ordered):
                 ordered = {
                     vol.Required(SECTION_TIMED): section(
-                        vol.Schema(timed_fields), {"collapsed": False}
+                        vol.Schema(timed_fields), {"collapsed": True}
                     ),
                     **ordered,
                 }
@@ -406,7 +429,7 @@ class BedControlsFormMixin:
                         )
                     }
                 ),
-                {"collapsed": False},
+                {"collapsed": True},
             )
 
         # Naming: a caption per control, and whether the Home app may rename.
@@ -422,7 +445,7 @@ class BedControlsFormMixin:
             )
         ] = selector.BooleanSelector()
         sections[vol.Required(SECTION_CAPTIONS)] = section(
-            vol.Schema(captions), {"collapsed": False}
+            vol.Schema(captions), {"collapsed": True}
         )
 
         # Display in HomeKit: inverted blinds sliders.
@@ -431,7 +454,7 @@ class BedControlsFormMixin:
             for c in controls
             if c.hk_type == "cover"
         ]
-        if invertible:
+        if invertible and position_bed:  # beds without positions: no display options
             valid = {o["value"] for o in invertible}
             sections[vol.Required(SECTION_DISPLAY)] = section(
                 vol.Schema(
@@ -444,7 +467,7 @@ class BedControlsFormMixin:
                         )
                     }
                 ),
-                {"collapsed": False},
+                {"collapsed": True},
             )
 
         # Layout: first control top left; the current grid is in its help text.
@@ -462,7 +485,7 @@ class BedControlsFormMixin:
                     )
                 }
             ),
-            {"collapsed": False},
+            {"collapsed": True},
         )
         return self.async_show_form(
             step_id=self._form_step_id,

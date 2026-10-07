@@ -27,67 +27,90 @@ from custom_components.homekit_bed.detection import (
 
 BASE = Path(__file__).parents[1] / "custom_components" / "homekit_bed"
 GROUPS = ("positions", "presets", "massage", "lighting", "climate", "firmness", "settings")
+# Section names start with an emoji: Home Assistant shows no icons for
+# config-flow sections, and a plain-text name is all a section header renders.
 SECTION_TEXT = {
     "en": {
-        "positions": ("Adjustable sections", "One slider per section."),
+        "positions": ("🛏️ Adjustable sections", ""),
         "presets": (
-            "Quick actions",
+            "⚡ Quick actions",
             "Switches to recall positions, such as Memory positions, Flat and Stop.",
         ),
-        "massage": ("Massage", "Sliders and/or switches for the available massage functions."),
+        "massage": ("💆 Massage", "Sliders and/or switches for the available massage functions."),
         "lighting": (
-            "Lighting",
-            "Switches and, where the light supports it, dimming sliders and colour controls. Shows the controllable bed and under-bed lighting, and lets you register Home Assistant lights in the same HomeKit control.",
+            "💡 Lighting",
+            "Switches and, where the light supports it, dimming sliders and colour controls. Shows the controllable bed and under-bed lights, and lets you register Home Assistant lights in the same HomeKit control.",
         ),
-        "climate": ("Climate", "Fan, and Sleep Number cooling/heating and footwarming as a fan."),
-        "firmness": ("Firmness", "Sleep Number firmness."),
-        "settings": ("Settings", "Settings and maintenance actions of the bed."),
+        "climate": ("🌡️ Climate", "Fan, and Sleep Number cooling/heating and footwarming as a fan."),
+        "firmness": ("🎚️ Firmness", "Sleep Number firmness."),
+        "settings": ("🔧 Settings", "Settings and maintenance actions of the bed."),
         "add": (
-            "Add controls",
+            "➕ Add controls",
             "Your bed shows the remaining controls here. Tick a control and press Submit to register it in HomeKit above.",
         ),
         "add_controls": "Add to HomeKit",
+        "captions": "🏷️ Labels in HomeKit",
+        "display": "👁️ Display in HomeKit",
+        "layout": "🔲 Layout in HomeKit",
+        "timed_buttons": (
+            "Buttons for timed adjustments of bed sections",
+            "Shows the durations per section (Submit to update the form).",
+        ),
+        "position_sliders": (
+            "Sliders for exact position adjustments of bed sections",
+            "Shows the slider per section (Submit to update the form).",
+        ),
     },
     "nl": {
-        "positions": ("Verstelbare bedsecties", "Eén schuifregelaar per sectie."),
+        "positions": ("🛏️ Verstelbare bedsecties", ""),
         "presets": (
-            "Snelle acties",
+            "⚡ Snelle acties",
             "Schakelaars om standen op te roepen, zoals Geheugenposities, Vlak en Stop.",
         ),
         "massage": (
-            "Massage",
+            "💆 Massage",
             "Schuifregelaars en/of schakelaars voor beschikbare massagefuncties.",
         ),
         "lighting": (
-            "Verlichting",
+            "💡 Verlichting",
             "Schakelaars en, indien door de lamp ondersteund, dimschuifregelaars en kleurregelaars. Toont bedienbare bed- en onder-bedverlichting en biedt de mogelijkheid om ook Home Assistant-verlichting binnen dezelfde bediening in HomeKit te registreren.",
         ),
         "climate": (
-            "Klimaat",
+            "🌡️ Klimaat",
             "Ventilator, en Sleep Number koelen/verwarmen en voetverwarming als ventilator.",
         ),
-        "firmness": ("Hardheid", "Sleep Number-hardheid."),
-        "settings": ("Instellingen", "Instellingen en onderhoudsacties van het bed."),
+        "firmness": ("🎚️ Hardheid", "Sleep Number-hardheid."),
+        "settings": ("🔧 Instellingen", "Instellingen en onderhoudsacties van het bed."),
         "add": (
-            "Bediening toevoegen",
+            "➕ Bediening toevoegen",
             "Jouw bed toont hier de resterende bedieningen. Vink een bediening aan en druk op Verzenden om deze hierboven in HomeKit te kunnen registreren.",
         ),
         "add_controls": "Toevoegen aan HomeKit",
+        "captions": "🏷️ Labels in HomeKit",
+        "display": "👁️ Weergave in HomeKit",
+        "layout": "🔲 Indeling in HomeKit",
+        "timed_buttons": (
+            "Knoppen voor getimede verstellingen van bedsecties",
+            "Toont de tijdsduur per bedsectie (druk op Verzenden om het formulier bij te werken).",
+        ),
+        "position_sliders": (
+            "Schuifregelaars voor exacte positieverstellingen van bedsecties",
+            "Toont de schuifregelaar per bedsectie (druk op Verzenden om het formulier bij te werken).",
+        ),
     },
 }
 TIMED_TEXT = {
     "en": (
-        "Timed moves",
-        "Seconds per movement (0 = off). Every section with a duration gets two push buttons in "
-        "HomeKit, up and down, that move it for that time (adjustable_bed.timed_move, at most "
-        "30 s). Useful for beds without position feedback. Stop interrupts a running move.",
+        "⏱️ Timed adjustments",
+        "Seconds per adjustment (0 = off, at most 30 s). The Home app shows two buttons per bed "
+        "section, up and down. Pressing a button adjusts the bed section for this number of "
+        "seconds in that direction. Stop interrupts a running adjustment.",
     ),
     "nl": (
-        "Getimede bewegingen",
-        "Seconden per beweging (0 = uit). Elke sectie met een duur krijgt in HomeKit twee "
-        "drukknoppen, omhoog en omlaag, die haar die tijd laten bewegen "
-        "(adjustable_bed.timed_move, maximaal 30 s). Handig voor bedden zonder standmelding. "
-        "Stop onderbreekt een lopende beweging.",
+        "⏱️ Tijdsduur verstellingen",
+        "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen "
+        "per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal "
+        "seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
     ),
 }
 TIMED_WORDS = {"en": {"up": "up", "down": "down"}, "nl": {"up": "omhoog", "down": "omlaag"}}
@@ -160,8 +183,18 @@ def main(source: str) -> None:
         text = SECTION_TEXT[lang]
         for group in GROUPS:
             sec = sections.setdefault(group, {})
-            sec["name"], sec["description"] = text[group]
+            sec["name"], description = text[group]
+            if description:
+                sec["description"] = description
+            else:
+                sec.pop("description", None)
             sec.setdefault("data", {})
+        # Switches at the top of the sections block (beds with positions).
+        for key in ("timed_buttons", "position_sliders"):
+            sections["positions"]["data"][key] = text[key][0]
+            sections["positions"].setdefault("data_description", {})[key] = text[key][1]
+        for key in ("captions", "display", "layout"):
+            sections[key]["name"] = text[key]
         # Catalog controls (hand-written names) into their detection group.
         for key, group in catalog_group.items():
             sections[group]["data"][key] = catalog_names[key]
@@ -188,7 +221,10 @@ def main(source: str) -> None:
         cap = sections["captions"]["data"]
         for group in GROUPS:
             for key, name in sections[group]["data"].items():
-                if not key.startswith("color_"):
+                if not key.startswith("color_") and key not in (
+                    "timed_buttons",
+                    "position_sliders",
+                ):
                     cap.setdefault(f"label_{key}", name)
         # Drop names of renamed or removed slots.
         for sec in sections.values():

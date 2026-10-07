@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.9.0
+- Form: all blocks collapsed, with an icon in each name; renamed to Adjustable sections, Timed
+  adjustments, Quick actions, Massage, Lighting, Add controls, Labels in HomeKit, Display in
+  HomeKit and Layout in HomeKit.
+- Beds that report positions: switches for timed buttons and for exact sliders at the top of
+  Adjustable sections; each shows or hides its fields. Beds without positions: timed
+  adjustments always, no display block.
+- Options menu: "Register controls in HomeKit".
+
 ## 4.8.0
 - Timed moves: set seconds per bed section in the form; each section with a duration gets
   *up* and *down* push buttons in HomeKit that call `adjustable_bed.timed_move` (side-aware,

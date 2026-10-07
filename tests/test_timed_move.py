@@ -52,8 +52,8 @@ async def test_head_feet_bed_and_sides(hass: HomeAssistant) -> None:
     assert calls["timed_back_left_down"]["motor"] == "back"
 
 
-async def test_form_section_after_sections(hass: HomeAssistant, mock_async_zeroconf) -> None:
-    device_id = _bed(hass, JENSEN)
+async def _open_form(hass, keys):
+    device_id = _bed(hass, keys)
     entry = MockConfigEntry(
         domain=DOMAIN,
         version=2,
@@ -67,18 +67,62 @@ async def test_form_section_after_sections(hass: HomeAssistant, mock_async_zeroc
     result = await hass.config_entries.options.async_configure(
         result["flow_id"], {"next_step_id": "controls"}
     )
+    return entry, result
+
+
+def _collapsed(result) -> bool:
+    return all(
+        v.options["collapsed"]
+        for v in result["data_schema"].schema.values()
+        if hasattr(v, "options")
+    )
+
+
+async def test_position_bed_switches(hass: HomeAssistant, mock_async_zeroconf) -> None:
+    """Jensen (position numbers): two switches on top; timed off by default."""
+    entry, result = await _open_form(hass, JENSEN)
+    secs = _sections(result)
+    assert secs["positions"][:2] == ["timed_buttons", "position_sliders"]
+    assert "back" in secs["positions"] and "timed" not in secs
+    assert "display" in secs and _collapsed(result)
+
+    # Timed buttons on -> the durations appear right after the sections
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result, positions__timed_buttons=True)
+    )
     secs = _sections(result)
     assert list(secs)[:2] == ["positions", "timed"]
     assert secs["timed"] == ["timed_back", "timed_legs"]
+
+    # Sliders off -> the slider fields disappear
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], _submit_unchanged(result, timed__timed_back=2.5)
+        result["flow_id"],
+        _submit_unchanged(result, positions__position_sliders=False, timed__timed_back=2.5),
+    )
+    secs = _sections(result)
+    assert secs["positions"] == ["timed_buttons", "position_sliders"]
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result)
     )
     assert result["step_id"] == "preview"
-    assert "Rugdeel omhoog" in result["description_placeholders"]["preview"] or (
-        "Head section up" in result["description_placeholders"]["preview"]
-    )
     await hass.config_entries.options.async_configure(result["flow_id"], {"save": True})
-    assert entry.options["timed_moves"] == {"back": 2.5}
+    o = entry.options
+    assert o["timed_buttons"] is True and o["position_sliders"] is False
+    assert o["timed_moves"] == {"back": 2.5}
+    ids = {c.id for c in effective_controls(hass, dict(entry.data), dict(o), LABELS)}
+    assert "back" not in ids and "legs" not in ids  # no exact sliders
+    assert {"timed_back_up", "timed_back_down"} <= ids
+
+
+async def test_bed_without_positions(hass: HomeAssistant, mock_async_zeroconf) -> None:
+    """Covers without position: no switches, timed always, no display section."""
+    _entry, result = await _open_form(
+        hass, [("cover", "back"), ("cover", "legs"), ("button", "preset_flat")]
+    )
+    secs = _sections(result)
+    assert "timed_buttons" not in secs["positions"]
+    assert secs["timed"] == ["timed_back", "timed_legs"]
+    assert "display" not in secs and _collapsed(result)
 
 
 async def test_button_calls_timed_move(hass: HomeAssistant, tmp_path) -> None:

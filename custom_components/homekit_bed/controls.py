@@ -25,7 +25,9 @@ from .const import (
     CONF_BED_DEVICE,
     CONF_HIDDEN,
     CONF_OVERRIDES,
+    CONF_SLIDERS,
     CONF_TIMED,
+    CONF_TIMED_ON,
     CONTROLS_BY_KEY,
     KIND_SWITCH,
     LABEL_PREFIX,
@@ -201,6 +203,42 @@ def normalize_options(detected: list[DetectedControl], options: dict[str, Any]) 
     return result
 
 
+def reports_position(hass: HomeAssistant, detected: list[DetectedControl]) -> bool:
+    """True when a bed section reports its position (number, or cover with a %)."""
+    for d in detected:
+        if not d.motor:
+            continue
+        if d.domain == "number":
+            return True
+        state = hass.states.get(d.entity_id)
+        if state is not None and state.attributes.get("current_position") is not None:
+            return True
+    return False
+
+
+def timed_sections(detected: list[DetectedControl]) -> list[DetectedControl]:
+    """One entry per motor and side that a timed move can drive.
+
+    A section can have both a position number and a cover; the shown one
+    (exposed) names the section.
+    """
+    best: dict[tuple[str, str | None], DetectedControl] = {}
+    for d in detected:
+        if d.timed_motor is None:
+            continue
+        key = (d.timed_motor, d.side)
+        if key not in best or (d.exposed and not best[key].exposed):
+            best[key] = d
+    return list(best.values())
+
+
+def timed_enabled(model: dict[str, Any], position_bed: bool) -> bool:
+    """Timed buttons on? Always for beds without positions; else the switch."""
+    if not position_bed:
+        return True
+    return bool(model.get(CONF_TIMED_ON, bool(model.get(CONF_TIMED))))
+
+
 def data_device_id(data: dict[str, Any]) -> str:
     """The bed device of an entry's data."""
     return str(data.get(CONF_BED_DEVICE) or "")
@@ -236,6 +274,10 @@ def effective_controls(
 
     model = normalize_options(detected, options)
     chosen = selected_ids(detected, model)
+    position_bed = reports_position(hass, detected)
+    if position_bed and not model.get(CONF_SLIDERS, True):
+        # Exact sliders switched off: bed sections only via timed buttons.
+        chosen = {cid for cid in chosen if cid not in {d.control_id for d in detected if d.motor}}
     overrides: dict[str, str] = model.get(CONF_OVERRIDES) or {}
     result: list[Control] = []
     for d in detected:
@@ -257,14 +299,20 @@ def effective_controls(
         )
     # Timed moves: two push buttons per section with a duration set.
     timed: dict[str, float] = model.get(CONF_TIMED) or {}
-    by_id = {d.control_id: d for d in detected}
-    for control in list(result):
-        seconds = float(timed.get(control.id) or 0)
-        source = by_id.get(control.id)
-        if seconds <= 0 or source is None or source.timed_motor is None:
+    if not timed_enabled(model, position_bed):
+        timed = {}
+    for source in timed_sections(detected):
+        seconds = float(timed.get(source.control_id) or 0)
+        if seconds <= 0:
             continue
+        section_caption = caption(
+            source.control_id,
+            (labels.get(source.control_id) if source.catalog_key else None)
+            or source.name
+            or source.key,
+        )
         for direction in ("up", "down"):
-            cid = f"timed_{control.id}_{direction}"
+            cid = f"timed_{source.control_id}_{direction}"
             word = labels.get(f"_timed_{direction}", direction)
             call_data: dict[str, Any] = {
                 "device_id": data_device_id(data),
@@ -277,11 +325,11 @@ def effective_controls(
             result.append(
                 Control(
                     id=cid,
-                    caption=caption(cid, f"{control.caption} {word}"),
+                    caption=caption(cid, f"{section_caption} {word}"),
                     entity_id="",
                     hk_type=HK_MOMENTARY,
                     interrupts_motion=True,
-                    group=control.group,
+                    group=source.group,
                     detected=True,
                     action={
                         "domain": "adjustable_bed",

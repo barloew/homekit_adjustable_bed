@@ -115,8 +115,7 @@
         "description": "## Registreer Adjustable Bed-bedieningen in HomeKit\n\nJouw bed toont hier bedieningen die beschikbaar zijn om in HomeKit geregistreerd te worden. Maak een veld leeg om de bediening niet in HomeKit te registreren.",
         "sections": {
           "positions": {
-            "name": "Verstelbare bedsecties",
-            "description": "Eén schuifregelaar per sectie.",
+            "name": "🛏️ Verstelbare bedsecties",
             "data": {
               "back": "Rugdeel omhoog / omlaag",
               "legs": "Voetendeel omhoog / omlaag",
@@ -275,11 +274,17 @@
               "head_position": "Head Position",
               "legs_position": "Legs Position",
               "lumbar_position": "Lumbar Position",
-              "pillow": "Pillow"
+              "pillow": "Pillow",
+              "timed_buttons": "Knoppen voor getimede verstellingen van bedsecties",
+              "position_sliders": "Schuifregelaars voor exacte positieverstellingen van bedsecties"
+            },
+            "data_description": {
+              "timed_buttons": "Toont de tijdsduur per bedsectie (druk op Verzenden om het formulier bij te werken).",
+              "position_sliders": "Toont de schuifregelaar per bedsectie (druk op Verzenden om het formulier bij te werken)."
             }
           },
           "presets": {
-            "name": "Snelle acties",
+            "name": "⚡ Snelle acties",
             "description": "Schakelaars om standen op te roepen, zoals Geheugenposities, Vlak en Stop.",
             "data": {
               "flat": "Vlak",
@@ -393,7 +398,7 @@
             }
           },
           "massage": {
-            "name": "Massage",
+            "name": "💆 Massage",
             "description": "Schuifregelaars en/of schakelaars voor beschikbare massagefuncties.",
             "data": {
               "head_massage": "Hoofdmassage-sterkte",
@@ -520,7 +525,7 @@
             }
           },
           "lighting": {
-            "name": "Verlichting",
+            "name": "💡 Verlichting",
             "description": "Schakelaars en, indien door de lamp ondersteund, dimschuifregelaars en kleurregelaars. Toont bedienbare bed- en onder-bedverlichting en biedt de mogelijkheid om ook Home Assistant-verlichting binnen dezelfde bediening in HomeKit te registreren.",
             "data": {
               "light_level": "Bedverlichting",
@@ -586,7 +591,7 @@
             }
           },
           "climate": {
-            "name": "Klimaat",
+            "name": "🌡️ Klimaat",
             "description": "Ventilator, en Sleep Number koelen/verwarmen en voetverwarming als ventilator.",
             "data": {
               "fan_level": "Ventilatorniveau",
@@ -610,7 +615,7 @@
             }
           },
           "firmness": {
-            "name": "Hardheid",
+            "name": "🎚️ Hardheid",
             "description": "Sleep Number-hardheid.",
             "data": {
               "sleep_number_setting": "Sleep Number Setting",
@@ -620,7 +625,7 @@
             }
           },
           "settings": {
-            "name": "Instellingen",
+            "name": "🔧 Instellingen",
             "description": "Instellingen en onderhoudsacties van het bed.",
             "data": {
               "auxiliary_action": "Auxiliary action",
@@ -689,14 +694,14 @@
             }
           },
           "add": {
-            "name": "Bediening toevoegen",
+            "name": "➕ Bediening toevoegen",
             "description": "Jouw bed toont hier de resterende bedieningen. Vink een bediening aan en druk op Verzenden om deze hierboven in HomeKit te kunnen registreren.",
             "data": {
               "add_controls": "Toevoegen aan HomeKit"
             }
           },
           "captions": {
-            "name": "Benaming",
+            "name": "🏷️ Labels in HomeKit",
             "description": "Weer te geven naam van de bediening in de Woning-app. Alleen letters, cijfers, spaties en apostroffen; andere tekens worden een spatie. Nieuw toegevoegde bedieningen krijgen eerst een standaardnaam.",
             "data": {
               "label_back": "Rugdeel omhoog / omlaag",
@@ -1195,7 +1200,7 @@
             }
           },
           "display": {
-            "name": "Weergave in HomeKit",
+            "name": "👁️ Weergave in HomeKit",
             "data": {
               "inverted": "Omgekeerde schuifregelaars"
             },
@@ -1204,7 +1209,7 @@
             }
           },
           "layout": {
-            "name": "Indeling",
+            "name": "🔲 Indeling in HomeKit",
             "data": {
               "primary_control": "Eerste bediening (linksboven)",
               "enforce_captions": "Benamingen afdwingen",
@@ -1270,8 +1275,8 @@
             }
           },
           "timed": {
-            "name": "Getimede bewegingen",
-            "description": "Seconden per beweging (0 = uit). Elke sectie met een duur krijgt in HomeKit twee drukknoppen, omhoog en omlaag, die haar die tijd laten bewegen (adjustable_bed.timed_move, maximaal 30 s). Handig voor bedden zonder standmelding. Stop onderbreekt een lopende beweging.",
+            "name": "⏱️ Tijdsduur verstellingen",
+            "description": "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
             "data": {
               "timed_auxiliary": "Auxiliary",
               "timed_auxiliary_1": "Auxiliary 1",
@@ -1395,7 +1400,7 @@
         "title": "Adjustable Bed - HomeKit Integratie",
         "description": "Wat wil je doen?",
         "menu_options": {
-          "controls": "Publiceer bedbedieningen als HomeKit-accessoire",
+          "controls": "Bediening in HomeKit registreren",
           "pairing": "Koppelen met HomeKit (QR-code tonen)"
         }
       },
@@ -1404,8 +1409,7 @@
         "description": "## Registreer Adjustable Bed-bedieningen in HomeKit\n\nJouw bed toont hier bedieningen die beschikbaar zijn om in HomeKit geregistreerd te worden. Maak een veld leeg om de bediening niet in HomeKit te registreren.",
         "sections": {
           "positions": {
-            "name": "Verstelbare bedsecties",
-            "description": "Eén schuifregelaar per sectie.",
+            "name": "🛏️ Verstelbare bedsecties",
             "data": {
               "back": "Rugdeel omhoog / omlaag",
               "legs": "Voetendeel omhoog / omlaag",
@@ -1564,11 +1568,17 @@
               "head_position": "Head Position",
               "legs_position": "Legs Position",
               "lumbar_position": "Lumbar Position",
-              "pillow": "Pillow"
+              "pillow": "Pillow",
+              "timed_buttons": "Knoppen voor getimede verstellingen van bedsecties",
+              "position_sliders": "Schuifregelaars voor exacte positieverstellingen van bedsecties"
+            },
+            "data_description": {
+              "timed_buttons": "Toont de tijdsduur per bedsectie (druk op Verzenden om het formulier bij te werken).",
+              "position_sliders": "Toont de schuifregelaar per bedsectie (druk op Verzenden om het formulier bij te werken)."
             }
           },
           "presets": {
-            "name": "Snelle acties",
+            "name": "⚡ Snelle acties",
             "description": "Schakelaars om standen op te roepen, zoals Geheugenposities, Vlak en Stop.",
             "data": {
               "flat": "Vlak",
@@ -1682,7 +1692,7 @@
             }
           },
           "massage": {
-            "name": "Massage",
+            "name": "💆 Massage",
             "description": "Schuifregelaars en/of schakelaars voor beschikbare massagefuncties.",
             "data": {
               "head_massage": "Hoofdmassage-sterkte",
@@ -1809,7 +1819,7 @@
             }
           },
           "lighting": {
-            "name": "Verlichting",
+            "name": "💡 Verlichting",
             "description": "Schakelaars en, indien door de lamp ondersteund, dimschuifregelaars en kleurregelaars. Toont bedienbare bed- en onder-bedverlichting en biedt de mogelijkheid om ook Home Assistant-verlichting binnen dezelfde bediening in HomeKit te registreren.",
             "data": {
               "light_level": "Bedverlichting",
@@ -1875,7 +1885,7 @@
             }
           },
           "climate": {
-            "name": "Klimaat",
+            "name": "🌡️ Klimaat",
             "description": "Ventilator, en Sleep Number koelen/verwarmen en voetverwarming als ventilator.",
             "data": {
               "fan_level": "Ventilatorniveau",
@@ -1899,7 +1909,7 @@
             }
           },
           "firmness": {
-            "name": "Hardheid",
+            "name": "🎚️ Hardheid",
             "description": "Sleep Number-hardheid.",
             "data": {
               "sleep_number_setting": "Sleep Number Setting",
@@ -1909,7 +1919,7 @@
             }
           },
           "settings": {
-            "name": "Instellingen",
+            "name": "🔧 Instellingen",
             "description": "Instellingen en onderhoudsacties van het bed.",
             "data": {
               "auxiliary_action": "Auxiliary action",
@@ -1978,14 +1988,14 @@
             }
           },
           "add": {
-            "name": "Bediening toevoegen",
+            "name": "➕ Bediening toevoegen",
             "description": "Jouw bed toont hier de resterende bedieningen. Vink een bediening aan en druk op Verzenden om deze hierboven in HomeKit te kunnen registreren.",
             "data": {
               "add_controls": "Toevoegen aan HomeKit"
             }
           },
           "captions": {
-            "name": "Benaming",
+            "name": "🏷️ Labels in HomeKit",
             "description": "Weer te geven naam van de bediening in de Woning-app. Alleen letters, cijfers, spaties en apostroffen; andere tekens worden een spatie. Nieuw toegevoegde bedieningen krijgen eerst een standaardnaam.",
             "data": {
               "label_back": "Rugdeel omhoog / omlaag",
@@ -2484,7 +2494,7 @@
             }
           },
           "display": {
-            "name": "Weergave in HomeKit",
+            "name": "👁️ Weergave in HomeKit",
             "data": {
               "inverted": "Omgekeerde schuifregelaars"
             },
@@ -2493,7 +2503,7 @@
             }
           },
           "layout": {
-            "name": "Indeling",
+            "name": "🔲 Indeling in HomeKit",
             "data": {
               "primary_control": "Eerste bediening (linksboven)",
               "enforce_captions": "Benamingen afdwingen",
@@ -2559,8 +2569,8 @@
             }
           },
           "timed": {
-            "name": "Getimede bewegingen",
-            "description": "Seconden per beweging (0 = uit). Elke sectie met een duur krijgt in HomeKit twee drukknoppen, omhoog en omlaag, die haar die tijd laten bewegen (adjustable_bed.timed_move, maximaal 30 s). Handig voor bedden zonder standmelding. Stop onderbreekt een lopende beweging.",
+            "name": "⏱️ Tijdsduur verstellingen",
+            "description": "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
             "data": {
               "timed_auxiliary": "Auxiliary",
               "timed_auxiliary_1": "Auxiliary 1",
