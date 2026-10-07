@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "bed_controls": {
+        "sections": {
+          "positions": "mdi:bed",
+          "timed": "mdi:bed-clock",
+          "presets": "mdi:gesture-tap-button",
+          "massage": "mdi:waves",
+          "climate": "mdi:hvac",
+          "firmness": "mdi:diamond-stone",
+          "lighting": "mdi:lightbulb",
+          "settings": "mdi:cog-outline",
+          "add": "mdi:link-plus",
+          "captions": "mdi:rename",
+          "display": "mdi:gesture-swipe-up",
+          "layout": "mdi:view-grid-plus-outline"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "controls": {
+        "sections": {
+          "positions": "mdi:bed",
+          "timed": "mdi:bed-clock",
+          "presets": "mdi:gesture-tap-button",
+          "massage": "mdi:waves",
+          "climate": "mdi:hvac",
+          "firmness": "mdi:diamond-stone",
+          "lighting": "mdi:lightbulb",
+          "settings": "mdi:cog-outline",
+          "add": "mdi:link-plus",
+          "captions": "mdi:rename",
+          "display": "mdi:gesture-swipe-up",
+          "layout": "mdi:view-grid-plus-outline"
+        }
+      }
+    }
+  },
+  "services": {
+    "reset_pairing": "mdi:link-off",
+    "push_captions": "mdi:rename"
+  }
+}

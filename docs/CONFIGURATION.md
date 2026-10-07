@@ -21,20 +21,23 @@
 
 ## The controls form
 
-All blocks start collapsed; each name starts with an icon (Home Assistant shows no other icons
-for form sections).
+All blocks start collapsed. `icons.json` defines an MDI icon per block (mdi:bed, mdi:bed-clock,
+mdi:gesture-tap-button, mdi:waves, mdi:hvac, mdi:diamond-stone, mdi:lightbulb, mdi:cog-outline,
+mdi:link-plus, mdi:rename, mdi:gesture-swipe-up, mdi:view-grid-plus-outline). The Home Assistant
+frontend does not show icons for config-flow sections yet, so each name also starts with an emoji
+and three non-breaking spaces.
 
 | Block | Contents |
 |---|---|
 | 🛏️ Adjustable sections | Beds with positions: two switches on top (timed buttons, exact sliders), then one slider per section |
 | ⏱️ Timed adjustments | Seconds per section (0 = off). Always for beds without positions; else when switched on |
-| ⚡ Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
-| 💆 Massage | Strength sliders and on/off buttons |
+| 👆 Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
+| 🌊 Massage | Strength sliders and on/off buttons |
 | 💡 Lighting | Bed lights, plus free slots for any Home Assistant light |
-| 🌡️ Climate, 🎚️ Firmness, 🔧 Settings | Only when the bed has them |
-| ➕ Add controls | Everything the bed offers that is not in HomeKit |
+| 🌡️ Climate, 💎 Firmness, ⚙️ Settings | Only when the bed has them |
+| 🔗 Add controls | Everything the bed offers that is not in HomeKit |
 | 🏷️ Labels in HomeKit | The name of every control in the Home app, and *Enforce names* |
-| 👁️ Display in HomeKit | *Inverted sliders* (beds with positions only) |
+| ↕️ Display in HomeKit | *Inverted sliders* (beds with positions only) |
 | 🔲 Layout in HomeKit | *First control (top left)* and the expected tile layout |
 
 Switching *timed buttons* or *exact sliders* and pressing Submit updates the form right away.

@@ -115,7 +115,7 @@
         "description": "## Register Adjustable Bed controls in HomeKit\n\nYour bed shows the controls that can be registered in HomeKit. Clear a field to keep that control out of HomeKit.",
         "sections": {
           "positions": {
-            "name": "🛏️ Adjustable sections",
+            "name": "🛏️   Adjustable sections",
             "data": {
               "back": "Head section up / down",
               "legs": "Foot section up / down",
@@ -284,7 +284,7 @@
             }
           },
           "presets": {
-            "name": "⚡ Quick actions",
+            "name": "👆   Quick actions",
             "description": "Switches to recall positions, such as Memory positions, Flat and Stop.",
             "data": {
               "flat": "Flat",
@@ -398,7 +398,7 @@
             }
           },
           "massage": {
-            "name": "💆 Massage",
+            "name": "🌊   Massage",
             "description": "Sliders and/or switches for the available massage functions.",
             "data": {
               "head_massage": "Head massage intensity",
@@ -525,7 +525,7 @@
             }
           },
           "lighting": {
-            "name": "💡 Lighting",
+            "name": "💡   Lighting",
             "description": "Switches and, where the light supports it, dimming sliders and colour controls. Shows the controllable bed and under-bed lights, and lets you register Home Assistant lights in the same HomeKit control.",
             "data": {
               "light_level": "Bed lighting",
@@ -591,7 +591,7 @@
             }
           },
           "climate": {
-            "name": "🌡️ Climate",
+            "name": "🌡️   Climate",
             "description": "Fan, and Sleep Number cooling/heating and footwarming as a fan.",
             "data": {
               "fan_level": "Fan level",
@@ -615,7 +615,7 @@
             }
           },
           "firmness": {
-            "name": "🎚️ Firmness",
+            "name": "💎   Firmness",
             "description": "Sleep Number firmness.",
             "data": {
               "sleep_number_setting": "Sleep Number Setting",
@@ -625,7 +625,7 @@
             }
           },
           "settings": {
-            "name": "🔧 Settings",
+            "name": "⚙️   Settings",
             "description": "Settings and maintenance actions of the bed.",
             "data": {
               "auxiliary_action": "Auxiliary action",
@@ -694,14 +694,14 @@
             }
           },
           "add": {
-            "name": "➕ Add controls",
+            "name": "🔗   Add controls",
             "description": "Your bed shows the remaining controls here. Tick a control and press Submit to register it in HomeKit above.",
             "data": {
               "add_controls": "Add to HomeKit"
             }
           },
           "captions": {
-            "name": "🏷️ Labels in HomeKit",
+            "name": "🏷️   Labels in HomeKit",
             "description": "Name of the control in the Home app. Letters, digits, spaces and apostrophes only; other characters become a space. Newly added controls get a default name first.",
             "data": {
               "label_back": "Head section up / down",
@@ -1200,7 +1200,7 @@
             }
           },
           "display": {
-            "name": "👁️ Display in HomeKit",
+            "name": "↕️   Display in HomeKit",
             "data": {
               "inverted": "Inverted sliders"
             },
@@ -1209,7 +1209,7 @@
             }
           },
           "layout": {
-            "name": "🔲 Layout in HomeKit",
+            "name": "🔲   Layout in HomeKit",
             "data": {
               "primary_control": "First control (top left)",
               "enforce_captions": "Enforce names",
@@ -1275,7 +1275,7 @@
             }
           },
           "timed": {
-            "name": "⏱️ Timed adjustments",
+            "name": "⏱️   Timed adjustments",
             "description": "Seconds per adjustment (0 = off, at most 30 s). The Home app shows two buttons per bed section, up and down. Pressing a button adjusts the bed section for this number of seconds in that direction. Stop interrupts a running adjustment.",
             "data": {
               "timed_auxiliary": "Auxiliary",
@@ -1409,7 +1409,7 @@
         "description": "## Register Adjustable Bed controls in HomeKit\n\nYour bed shows the controls that can be registered in HomeKit. Clear a field to keep that control out of HomeKit.",
         "sections": {
           "positions": {
-            "name": "🛏️ Adjustable sections",
+            "name": "🛏️   Adjustable sections",
             "data": {
               "back": "Head section up / down",
               "legs": "Foot section up / down",
@@ -1578,7 +1578,7 @@
             }
           },
           "presets": {
-            "name": "⚡ Quick actions",
+            "name": "👆   Quick actions",
             "description": "Switches to recall positions, such as Memory positions, Flat and Stop.",
             "data": {
               "flat": "Flat",
@@ -1692,7 +1692,7 @@
             }
           },
           "massage": {
-            "name": "💆 Massage",
+            "name": "🌊   Massage",
             "description": "Sliders and/or switches for the available massage functions.",
             "data": {
               "head_massage": "Head massage intensity",
@@ -1819,7 +1819,7 @@
             }
           },
           "lighting": {
-            "name": "💡 Lighting",
+            "name": "💡   Lighting",
             "description": "Switches and, where the light supports it, dimming sliders and colour controls. Shows the controllable bed and under-bed lights, and lets you register Home Assistant lights in the same HomeKit control.",
             "data": {
               "light_level": "Bed lighting",
@@ -1885,7 +1885,7 @@
             }
           },
           "climate": {
-            "name": "🌡️ Climate",
+            "name": "🌡️   Climate",
             "description": "Fan, and Sleep Number cooling/heating and footwarming as a fan.",
             "data": {
               "fan_level": "Fan level",
@@ -1909,7 +1909,7 @@
             }
           },
           "firmness": {
-            "name": "🎚️ Firmness",
+            "name": "💎   Firmness",
             "description": "Sleep Number firmness.",
             "data": {
               "sleep_number_setting": "Sleep Number Setting",
@@ -1919,7 +1919,7 @@
             }
           },
           "settings": {
-            "name": "🔧 Settings",
+            "name": "⚙️   Settings",
             "description": "Settings and maintenance actions of the bed.",
             "data": {
               "auxiliary_action": "Auxiliary action",
@@ -1988,14 +1988,14 @@
             }
           },
           "add": {
-            "name": "➕ Add controls",
+            "name": "🔗   Add controls",
             "description": "Your bed shows the remaining controls here. Tick a control and press Submit to register it in HomeKit above.",
             "data": {
               "add_controls": "Add to HomeKit"
             }
           },
           "captions": {
-            "name": "🏷️ Labels in HomeKit",
+            "name": "🏷️   Labels in HomeKit",
             "description": "Name of the control in the Home app. Letters, digits, spaces and apostrophes only; other characters become a space. Newly added controls get a default name first.",
             "data": {
               "label_back": "Head section up / down",
@@ -2494,7 +2494,7 @@
             }
           },
           "display": {
-            "name": "👁️ Display in HomeKit",
+            "name": "↕️   Display in HomeKit",
             "data": {
               "inverted": "Inverted sliders"
             },
@@ -2503,7 +2503,7 @@
             }
           },
           "layout": {
-            "name": "🔲 Layout in HomeKit",
+            "name": "🔲   Layout in HomeKit",
             "data": {
               "primary_control": "First control (top left)",
               "enforce_captions": "Enforce names",
@@ -2569,7 +2569,7 @@
             }
           },
           "timed": {
-            "name": "⏱️ Timed adjustments",
+            "name": "⏱️   Timed adjustments",
             "description": "Seconds per adjustment (0 = off, at most 30 s). The Home app shows two buttons per bed section, up and down. Pressing a button adjusts the bed section for this number of seconds in that direction. Stop interrupts a running adjustment.",
             "data": {
               "timed_auxiliary": "Auxiliary",

@@ -145,3 +145,36 @@ def test_no_dutch_left_in_code() -> None:
                 and id(node) not in docstrings
             ):
                 assert not dutch.search(node.value), f"{py.name}: {node.value!r}"
+
+
+def test_icons_json() -> None:
+    """MDI icons for every form section and every action (hassfest format)."""
+    icons = json.loads((BASE / "icons.json").read_text())
+    for flow, step in (("config", "bed_controls"), ("options", "controls")):
+        sections = icons[flow]["step"][step]["sections"]
+        names = EN[flow]["step"][step]["sections"]
+        groups = {
+            "positions",
+            "timed",
+            "presets",
+            "massage",
+            "climate",
+            "firmness",
+            "lighting",
+            "settings",
+            "add",
+            "captions",
+            "display",
+            "layout",
+        }
+        assert set(sections) == groups and groups <= set(names)
+        assert all(icon.startswith("mdi:") for icon in sections.values())
+    assert set(icons["services"]) == {"reset_pairing", "push_captions"}
+
+
+def test_section_names_have_icon_and_three_spaces() -> None:
+    for lang in LANGS.values():
+        for key, sec in lang["options"]["step"]["controls"]["sections"].items():
+            if key in ("comfort", "switches"):
+                continue  # only used by the manual form
+            assert "\u00a0\u00a0\u00a0" in sec["name"], (key, sec["name"])

@@ -13,6 +13,7 @@ Run again after updating ha-adjustable-bed.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -27,31 +28,56 @@ from custom_components.homekit_bed.detection import (
 
 BASE = Path(__file__).parents[1] / "custom_components" / "homekit_bed"
 GROUPS = ("positions", "presets", "massage", "lighting", "climate", "firmness", "settings")
-# Section names start with an emoji: Home Assistant shows no icons for
-# config-flow sections, and a plain-text name is all a section header renders.
+# Section icons. icons.json carries the MDI icons (valid for hassfest, but the
+# Home Assistant frontend does not show icons for config-flow sections yet),
+# so the names also start with a matching emoji and three non-breaking spaces
+# (normal spaces would collapse to one).
+SECTION_ICONS = {
+    "positions": ("mdi:bed", "🛏️"),
+    "timed": ("mdi:bed-clock", "⏱️"),
+    "presets": ("mdi:gesture-tap-button", "👆"),
+    "massage": ("mdi:waves", "🌊"),
+    "climate": ("mdi:hvac", "🌡️"),
+    "firmness": ("mdi:diamond-stone", "💎"),
+    "lighting": ("mdi:lightbulb", "💡"),
+    "settings": ("mdi:cog-outline", "⚙️"),
+    "add": ("mdi:link-plus", "🔗"),
+    "captions": ("mdi:rename", "🏷️"),
+    "display": ("mdi:gesture-swipe-up", "↕️"),
+    "layout": ("mdi:view-grid-plus-outline", "🔲"),
+}
+GAP = "\u00a0\u00a0\u00a0"
+
+
+def with_icon(section: str, name: str) -> str:
+    """Section name with its emoji in front (any old prefix removed)."""
+    name = re.sub(r"^[^\w(]+\s+", "", name)
+    return f"{SECTION_ICONS[section][1]}{GAP}{name}"
+
+
 SECTION_TEXT = {
     "en": {
-        "positions": ("🛏️ Adjustable sections", ""),
+        "positions": ("Adjustable sections", ""),
         "presets": (
-            "⚡ Quick actions",
+            "Quick actions",
             "Switches to recall positions, such as Memory positions, Flat and Stop.",
         ),
-        "massage": ("💆 Massage", "Sliders and/or switches for the available massage functions."),
+        "massage": ("Massage", "Sliders and/or switches for the available massage functions."),
         "lighting": (
-            "💡 Lighting",
+            "Lighting",
             "Switches and, where the light supports it, dimming sliders and colour controls. Shows the controllable bed and under-bed lights, and lets you register Home Assistant lights in the same HomeKit control.",
         ),
-        "climate": ("🌡️ Climate", "Fan, and Sleep Number cooling/heating and footwarming as a fan."),
-        "firmness": ("🎚️ Firmness", "Sleep Number firmness."),
-        "settings": ("🔧 Settings", "Settings and maintenance actions of the bed."),
+        "climate": ("Climate", "Fan, and Sleep Number cooling/heating and footwarming as a fan."),
+        "firmness": ("Firmness", "Sleep Number firmness."),
+        "settings": ("Settings", "Settings and maintenance actions of the bed."),
         "add": (
-            "➕ Add controls",
+            "Add controls",
             "Your bed shows the remaining controls here. Tick a control and press Submit to register it in HomeKit above.",
         ),
         "add_controls": "Add to HomeKit",
-        "captions": "🏷️ Labels in HomeKit",
-        "display": "👁️ Display in HomeKit",
-        "layout": "🔲 Layout in HomeKit",
+        "captions": "Labels in HomeKit",
+        "display": "Display in HomeKit",
+        "layout": "Layout in HomeKit",
         "timed_buttons": (
             "Buttons for timed adjustments of bed sections",
             "Shows the durations per section (Submit to update the form).",
@@ -62,33 +88,33 @@ SECTION_TEXT = {
         ),
     },
     "nl": {
-        "positions": ("🛏️ Verstelbare bedsecties", ""),
+        "positions": ("Verstelbare bedsecties", ""),
         "presets": (
-            "⚡ Snelle acties",
+            "Snelle acties",
             "Schakelaars om standen op te roepen, zoals Geheugenposities, Vlak en Stop.",
         ),
         "massage": (
-            "💆 Massage",
+            "Massage",
             "Schuifregelaars en/of schakelaars voor beschikbare massagefuncties.",
         ),
         "lighting": (
-            "💡 Verlichting",
+            "Verlichting",
             "Schakelaars en, indien door de lamp ondersteund, dimschuifregelaars en kleurregelaars. Toont bedienbare bed- en onder-bedverlichting en biedt de mogelijkheid om ook Home Assistant-verlichting binnen dezelfde bediening in HomeKit te registreren.",
         ),
         "climate": (
-            "🌡️ Klimaat",
+            "Klimaat",
             "Ventilator, en Sleep Number koelen/verwarmen en voetverwarming als ventilator.",
         ),
-        "firmness": ("🎚️ Hardheid", "Sleep Number-hardheid."),
-        "settings": ("🔧 Instellingen", "Instellingen en onderhoudsacties van het bed."),
+        "firmness": ("Hardheid", "Sleep Number-hardheid."),
+        "settings": ("Instellingen", "Instellingen en onderhoudsacties van het bed."),
         "add": (
-            "➕ Bediening toevoegen",
+            "Bediening toevoegen",
             "Jouw bed toont hier de resterende bedieningen. Vink een bediening aan en druk op Verzenden om deze hierboven in HomeKit te kunnen registreren.",
         ),
         "add_controls": "Toevoegen aan HomeKit",
-        "captions": "🏷️ Labels in HomeKit",
-        "display": "👁️ Weergave in HomeKit",
-        "layout": "🔲 Indeling in HomeKit",
+        "captions": "Labels in HomeKit",
+        "display": "Weergave in HomeKit",
+        "layout": "Indeling in HomeKit",
         "timed_buttons": (
             "Knoppen voor getimede verstellingen van bedsecties",
             "Toont de tijdsduur per bedsectie (druk op Verzenden om het formulier bij te werken).",
@@ -101,13 +127,13 @@ SECTION_TEXT = {
 }
 TIMED_TEXT = {
     "en": (
-        "⏱️ Timed adjustments",
+        "Timed adjustments",
         "Seconds per adjustment (0 = off, at most 30 s). The Home app shows two buttons per bed "
         "section, up and down. Pressing a button adjusts the bed section for this number of "
         "seconds in that direction. Stop interrupts a running adjustment.",
     ),
     "nl": (
-        "⏱️ Tijdsduur verstellingen",
+        "Tijdsduur verstellingen",
         "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen "
         "per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal "
         "seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
@@ -183,7 +209,8 @@ def main(source: str) -> None:
         text = SECTION_TEXT[lang]
         for group in GROUPS:
             sec = sections.setdefault(group, {})
-            sec["name"], description = text[group]
+            name, description = text[group]
+            sec["name"] = with_icon(group, name)
             if description:
                 sec["description"] = description
             else:
@@ -194,7 +221,7 @@ def main(source: str) -> None:
             sections["positions"]["data"][key] = text[key][0]
             sections["positions"].setdefault("data_description", {})[key] = text[key][1]
         for key in ("captions", "display", "layout"):
-            sections[key]["name"] = text[key]
+            sections[key]["name"] = with_icon(key, text[key])
         # Catalog controls (hand-written names) into their detection group.
         for key, group in catalog_group.items():
             sections[group]["data"][key] = catalog_names[key]
@@ -234,7 +261,7 @@ def main(source: str) -> None:
         # Timed moves: one seconds field per section, named after the section.
         timed_text = TIMED_TEXT[lang]
         sections["timed"] = {
-            "name": timed_text[0],
+            "name": with_icon("timed", timed_text[0]),
             "description": timed_text[1],
             "data": {
                 f"timed_{mid}": sections["positions"]["data"].get(mid, mid)
@@ -244,7 +271,7 @@ def main(source: str) -> None:
         }
         data["selector"]["timed_move"] = {"options": TIMED_WORDS[lang]}
         sections["add"] = {
-            "name": text["add"][0],
+            "name": with_icon("add", text["add"][0]),
             "description": text["add"][1],
             "data": {"add_controls": text["add_controls"]},
         }
@@ -253,6 +280,13 @@ def main(source: str) -> None:
             json.dumps(data["options"]["step"]["controls"])
         )
         path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    icon_map = {key: icon for key, (icon, _emoji) in SECTION_ICONS.items()}
+    icons = {
+        "config": {"step": {"bed_controls": {"sections": icon_map}}},
+        "options": {"step": {"controls": {"sections": icon_map}}},
+        "services": {"reset_pairing": "mdi:link-off", "push_captions": "mdi:rename"},
+    }
+    (BASE / "icons.json").write_text(json.dumps(icons, indent=2, ensure_ascii=False) + "\n")
     (BASE / "strings.json").write_text((BASE / "translations" / "en.json").read_text())
     print(f"{len(names)} detected controls named")
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.9.1
+- `icons.json` with MDI icons for every form section and both actions. Home Assistant does not
+  show icons for config-flow sections yet, so the section names keep a matching emoji followed by
+  three non-breaking spaces.
+
 ## 4.9.0
 - Form: all blocks collapsed, with an icon in each name; renamed to Adjustable sections, Timed
   adjustments, Quick actions, Massage, Lighting, Add controls, Labels in HomeKit, Display in
