@@ -521,7 +521,13 @@
               "massage_all_toggle": "Massage: Toggle",
               "massage_foot_intensity": "Massage: Foot Intensity",
               "massage_head_intensity": "Massage: Head Intensity",
-              "massage_wave_intensity": "Massage: Wave Intensity"
+              "massage_wave_intensity": "Massage: Wave Intensity",
+              "massage_buttons": "Buttons for massage functions",
+              "massage_sliders": "Sliders for massage strength"
+            },
+            "data_description": {
+              "massage_buttons": "Shows the available massage buttons (Submit to update the form).",
+              "massage_sliders": "Shows the available massage sliders (Submit to update the form)."
             }
           },
           "lighting": {
@@ -1193,7 +1199,9 @@
               "label_toggle_light": "Toggle Light",
               "label_under_bed_lights": "Under Bed Lights",
               "label_under_bed_light_level_left": "Under-bed lighting left",
-              "label_under_bed_light_level_right": "Under-bed lighting right"
+              "label_under_bed_light_level_right": "Under-bed lighting right",
+              "label_massage_buttons": "Buttons for massage functions",
+              "label_massage_sliders": "Sliders for massage strength"
             },
             "data_description": {
               "enforce_captions": "Sends the names back when the Home app assigns names of its own. Turn off to rename controls in the Home app yourself."
@@ -1815,7 +1823,13 @@
               "massage_all_toggle": "Massage: Toggle",
               "massage_foot_intensity": "Massage: Foot Intensity",
               "massage_head_intensity": "Massage: Head Intensity",
-              "massage_wave_intensity": "Massage: Wave Intensity"
+              "massage_wave_intensity": "Massage: Wave Intensity",
+              "massage_buttons": "Buttons for massage functions",
+              "massage_sliders": "Sliders for massage strength"
+            },
+            "data_description": {
+              "massage_buttons": "Shows the available massage buttons (Submit to update the form).",
+              "massage_sliders": "Shows the available massage sliders (Submit to update the form)."
             }
           },
           "lighting": {
@@ -2487,7 +2501,9 @@
               "label_toggle_light": "Toggle Light",
               "label_under_bed_lights": "Under Bed Lights",
               "label_under_bed_light_level_left": "Under-bed lighting left",
-              "label_under_bed_light_level_right": "Under-bed lighting right"
+              "label_under_bed_light_level_right": "Under-bed lighting right",
+              "label_massage_buttons": "Buttons for massage functions",
+              "label_massage_sliders": "Sliders for massage strength"
             },
             "data_description": {
               "enforce_captions": "Sends the names back when the Home app assigns names of its own. Turn off to rename controls in the Home app yourself."

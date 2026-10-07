@@ -32,16 +32,18 @@ and three non-breaking spaces.
 | 🛏️ Adjustable sections | Beds with positions: two switches on top (timed buttons, exact sliders), then one slider per section |
 | ⏱️ Timed adjustments | Seconds per section (0 = off). Always for beds without positions; else when switched on |
 | 👆 Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
-| 🌊 Massage | Strength sliders and on/off buttons |
+| 🌊 Massage | Switches for massage buttons and massage sliders (kinds the bed has), then the controls |
 | 💡 Lighting | Bed lights, plus free slots for any Home Assistant light |
 | 🌡️ Climate, 💎 Firmness, ⚙️ Settings | Only when the bed has them |
 | 🔗 Add controls | Everything the bed offers that is not in HomeKit |
 | 🏷️ Labels in HomeKit | The name of every control in the Home app, and *Enforce names* |
-| ↕️ Display in HomeKit | *Inverted sliders* (beds with positions only) |
+| ↕️ Display in HomeKit | *Inverted sliders*; only sliders that are on; hidden without sliders (and for beds without positions) |
 | 🔲 Layout in HomeKit | *First control (top left)* and the expected tile layout |
 
-Switching *timed buttons* or *exact sliders* and pressing Submit updates the form right away.
-With exact sliders off, the bed sections are only operated with the timed buttons.
+Switching *timed buttons*, *exact sliders*, *massage buttons* or *massage sliders* and pressing
+Submit updates the form right away. A kind that is off is removed from HomeKit and not offered
+under *Add controls*. With exact sliders off, the bed sections are only operated with the timed
+buttons.
 
 Every field holds the matched entity. The entity picker shows the device under each entity.
 

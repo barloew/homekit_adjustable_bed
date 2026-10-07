@@ -7,7 +7,7 @@ from typing import Final
 
 DOMAIN: Final = "homekit_bed"
 # Keep equal to manifest.json and pyproject.toml (tests/test_version.py).
-VERSION: Final = "4.9.1"
+VERSION: Final = "4.10.0"
 
 # Config entry data
 CONF_BED_DEVICE: Final = "bed_device"
@@ -241,6 +241,9 @@ CONF_OVERRIDES: Final = "entity_overrides"
 # Beds that report positions: show exact sliders and/or timed buttons.
 CONF_SLIDERS: Final = "position_sliders"
 CONF_TIMED_ON: Final = "timed_buttons"
+# Massage: sliders (strength) and/or buttons (on/off, modes), each switchable.
+CONF_MASSAGE_SLIDERS: Final = "massage_sliders"
+CONF_MASSAGE_BUTTONS: Final = "massage_buttons"
 
 # Timed moves (adjustable_bed.timed_move) per section: {control id: seconds}.
 CONF_TIMED: Final = "timed_moves"

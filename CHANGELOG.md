@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.10.0
+- Massage: switches for massage buttons and massage sliders (only for kinds the bed has); each
+  shows or hides its controls in the form and in HomeKit.
+- Display in HomeKit only lists sliders that are on, and is hidden when no slider is on.
+- Switched-off kinds are not offered under Add controls.
+- Dutch: "Getimede verstellingen".
+
 ## 4.9.1
 - `icons.json` with MDI icons for every form section and both actions. Home Assistant does not
   show icons for config-flow sections yet, so the section names keep a matching emoji followed by

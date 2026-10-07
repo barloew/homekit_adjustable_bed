@@ -36,6 +36,8 @@ from .const import (
     CONF_ENFORCE_CAPTIONS,
     CONF_HIDDEN,
     CONF_INVERTED,
+    CONF_MASSAGE_BUTTONS,
+    CONF_MASSAGE_SLIDERS,
     CONF_OVERRIDES,
     CONF_PORT,
     CONF_PRIMARY,
@@ -59,9 +61,12 @@ from .const import (
 from .controls import (
     Control,
     effective_controls,
+    is_massage_button,
+    is_massage_slider,
     normalize_options,
     reports_position,
     selected_ids,
+    switched_off_ids,
     timed_enabled,
     timed_sections,
 )
@@ -298,13 +303,23 @@ class BedControlsFormMixin:
                     for key, seconds in (user_input[SECTION_TIMED] or {}).items()
                     if seconds and float(seconds) > 0
                 }
-            positions_in = user_input.get("positions") or {}
-            for key in (CONF_SLIDERS, CONF_TIMED_ON):
-                if key in positions_in and bool(positions_in[key]) != bool(
-                    model.get(key, key == CONF_SLIDERS or bool(model.get(CONF_TIMED)))
-                ):
-                    model[key] = bool(positions_in[key])
-                    moved = True  # show or hide the related fields right away
+            switch_defaults = {
+                CONF_SLIDERS: True,
+                CONF_TIMED_ON: bool(model.get(CONF_TIMED)),
+                CONF_MASSAGE_SLIDERS: True,
+                CONF_MASSAGE_BUTTONS: True,
+            }
+            for group, keys in (
+                ("positions", (CONF_TIMED_ON, CONF_SLIDERS)),
+                ("massage", (CONF_MASSAGE_BUTTONS, CONF_MASSAGE_SLIDERS)),
+            ):
+                group_in = user_input.get(group) or {}
+                for key in keys:
+                    if key in group_in and bool(group_in[key]) != bool(
+                        model.get(key, switch_defaults[key])
+                    ):
+                        model[key] = bool(group_in[key])
+                        moved = True  # show or hide the related fields right away
             model[CONF_HIDDEN] = sorted(hidden)
             model[CONF_ADDED] = sorted(added)
             model[CONF_OVERRIDES] = overrides
@@ -338,6 +353,22 @@ class BedControlsFormMixin:
                 fields[vol.Optional(CONF_SLIDERS, default=bool(model.get(CONF_SLIDERS, True)))] = (
                     selector.BooleanSelector()
                 )
+            if group == "massage":
+                # Only switches for kinds this bed has.
+                if any(is_massage_button(d) for d in detected):
+                    fields[
+                        vol.Optional(
+                            CONF_MASSAGE_BUTTONS,
+                            default=bool(model.get(CONF_MASSAGE_BUTTONS, True)),
+                        )
+                    ] = selector.BooleanSelector()
+                if any(is_massage_slider(d) for d in detected):
+                    fields[
+                        vol.Optional(
+                            CONF_MASSAGE_SLIDERS,
+                            default=bool(model.get(CONF_MASSAGE_SLIDERS, True)),
+                        )
+                    ] = selector.BooleanSelector()
             members = [c for c in controls if c.group == group and not c.action]
             if group == "lighting":
                 # Free slots for any HA light (e.g. Hue next to / under the bed);
@@ -408,7 +439,9 @@ class BedControlsFormMixin:
 
         groups = await async_group_names(self.hass)
         chosen = selected_ids(detected, model)
-        available = [d for d in detected if d.control_id not in chosen]
+        # Kinds switched off are not offered for adding either.
+        off = switched_off_ids(detected, model, position_bed)
+        available = [d for d in detected if d.control_id not in chosen and d.control_id not in off]
         if available:
             names = await async_control_names(self.hass)
             sections[vol.Required(SECTION_ADD)] = section(

@@ -168,3 +168,58 @@ async def test_button_calls_timed_move(hass: HomeAssistant, tmp_path) -> None:
     await hass.async_block_till_done()
     assert calls == [action["data"]]
     acc.async_detach()
+
+
+def _display_options(result) -> list[str]:
+    for marker, value in result["data_schema"].schema.items():
+        if str(marker) == "display":
+            sel = next(iter(value.schema.schema.values()))
+            return [o["value"] for o in sel.config["options"]]
+    return []
+
+
+async def test_massage_switches_and_display(hass: HomeAssistant, mock_async_zeroconf) -> None:
+    entry, result = await _open_form(hass, JENSEN)
+    secs = _sections(result)
+    assert secs["massage"][:2] == ["massage_buttons", "massage_sliders"]
+    assert "head_massage" in secs["massage"] and "massage_toggle" in secs["massage"]
+    assert set(_display_options(result)) >= {"back", "legs", "head_massage"}
+
+    # Massage sliders off: gone from the form, from "add" and from Display
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result, massage__massage_sliders=False)
+    )
+    secs = _sections(result)
+    assert "head_massage" not in secs["massage"] and "massage_toggle" in secs["massage"]
+    assert set(_display_options(result)) == {"back", "legs"}
+    add = next((v for k, v in result["data_schema"].schema.items() if str(k) == "add"), None)
+    if add is not None:
+        offered = [o["value"] for o in next(iter(add.schema.schema.values())).config["options"]]
+        assert "head_massage" not in offered
+
+    # Bed section sliders off too: no sliders at all -> no Display block
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result, positions__position_sliders=False)
+    )
+    assert "display" not in _sections(result)
+
+    # Massage buttons off: only the switches remain in Massage
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result, massage__massage_buttons=False)
+    )
+    assert _sections(result)["massage"] == ["massage_buttons", "massage_sliders"]
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], _submit_unchanged(result)
+    )
+    await hass.config_entries.options.async_configure(result["flow_id"], {"save": True})
+    ids = {c.id for c in effective_controls(hass, dict(entry.data), dict(entry.options), LABELS)}
+    assert not ids & {"head_massage", "foot_massage", "wave_massage", "massage_toggle"}
+    assert "flat" in ids
+
+
+async def test_only_massage_buttons(hass: HomeAssistant, mock_async_zeroconf) -> None:
+    _entry, result = await _open_form(
+        hass, [("cover", "back"), ("button", "massage_all_toggle"), ("button", "preset_flat")]
+    )
+    assert _sections(result)["massage"][0] == "massage_buttons"
+    assert "massage_sliders" not in _sections(result)["massage"]

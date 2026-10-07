@@ -24,6 +24,8 @@ from .const import (
     CONF_AUTO_SELECTED,
     CONF_BED_DEVICE,
     CONF_HIDDEN,
+    CONF_MASSAGE_BUTTONS,
+    CONF_MASSAGE_SLIDERS,
     CONF_OVERRIDES,
     CONF_SLIDERS,
     CONF_TIMED,
@@ -232,6 +234,33 @@ def timed_sections(detected: list[DetectedControl]) -> list[DetectedControl]:
     return list(best.values())
 
 
+def is_massage_slider(d: DetectedControl) -> bool:
+    return d.group == "massage" and d.hk_type in (HK_COVER, HK_FAN, HK_LIGHT)
+
+
+def is_massage_button(d: DetectedControl) -> bool:
+    return d.group == "massage" and not is_massage_slider(d)
+
+
+def switched_off_ids(
+    detected: list[DetectedControl], model: dict[str, Any], position_bed: bool
+) -> set[str]:
+    """Ids of detected controls whose kind the user switched off in the form.
+
+    Bed sections: exact sliders (beds that report positions only).
+    Massage: strength sliders and/or massage buttons.
+    """
+    off: set[str] = set()
+    for d in detected:
+        if (
+            (position_bed and d.motor and not model.get(CONF_SLIDERS, True))
+            or (is_massage_slider(d) and not model.get(CONF_MASSAGE_SLIDERS, True))
+            or (is_massage_button(d) and not model.get(CONF_MASSAGE_BUTTONS, True))
+        ):
+            off.add(d.control_id)
+    return off
+
+
 def timed_enabled(model: dict[str, Any], position_bed: bool) -> bool:
     """Timed buttons on? Always for beds without positions; else the switch."""
     if not position_bed:
@@ -275,9 +304,7 @@ def effective_controls(
     model = normalize_options(detected, options)
     chosen = selected_ids(detected, model)
     position_bed = reports_position(hass, detected)
-    if position_bed and not model.get(CONF_SLIDERS, True):
-        # Exact sliders switched off: bed sections only via timed buttons.
-        chosen = {cid for cid in chosen if cid not in {d.control_id for d in detected if d.motor}}
+    chosen -= switched_off_ids(detected, model, position_bed)
     overrides: dict[str, str] = model.get(CONF_OVERRIDES) or {}
     result: list[Control] = []
     for d in detected:

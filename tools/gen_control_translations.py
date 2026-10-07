@@ -86,6 +86,14 @@ SECTION_TEXT = {
             "Sliders for exact position adjustments of bed sections",
             "Shows the slider per section (Submit to update the form).",
         ),
+        "massage_buttons": (
+            "Buttons for massage functions",
+            "Shows the available massage buttons (Submit to update the form).",
+        ),
+        "massage_sliders": (
+            "Sliders for massage strength",
+            "Shows the available massage sliders (Submit to update the form).",
+        ),
     },
     "nl": {
         "positions": ("Verstelbare bedsecties", ""),
@@ -123,6 +131,14 @@ SECTION_TEXT = {
             "Schuifregelaars voor exacte positieverstellingen van bedsecties",
             "Toont de schuifregelaar per bedsectie (druk op Verzenden om het formulier bij te werken).",
         ),
+        "massage_buttons": (
+            "Knoppen voor massagefuncties",
+            "Toont de beschikbare massageknoppen (druk op Verzenden om het formulier bij te werken).",
+        ),
+        "massage_sliders": (
+            "Schuifregelaars voor massagesterkte",
+            "Toont de beschikbare massage-schuifregelaars (druk op Verzenden om het formulier bij te werken).",
+        ),
     },
 }
 TIMED_TEXT = {
@@ -133,7 +149,7 @@ TIMED_TEXT = {
         "seconds in that direction. Stop interrupts a running adjustment.",
     ),
     "nl": (
-        "Tijdsduur verstellingen",
+        "Getimede verstellingen",
         "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen "
         "per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal "
         "seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
@@ -217,9 +233,13 @@ def main(source: str) -> None:
                 sec.pop("description", None)
             sec.setdefault("data", {})
         # Switches at the top of the sections block (beds with positions).
-        for key in ("timed_buttons", "position_sliders"):
-            sections["positions"]["data"][key] = text[key][0]
-            sections["positions"].setdefault("data_description", {})[key] = text[key][1]
+        for group, keys in (
+            ("positions", ("timed_buttons", "position_sliders")),
+            ("massage", ("massage_buttons", "massage_sliders")),
+        ):
+            for key in keys:
+                sections[group]["data"][key] = text[key][0]
+                sections[group].setdefault("data_description", {})[key] = text[key][1]
         for key in ("captions", "display", "layout"):
             sections[key]["name"] = with_icon(key, text[key])
         # Catalog controls (hand-written names) into their detection group.

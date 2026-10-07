@@ -521,7 +521,13 @@
               "massage_all_toggle": "Massage: Toggle",
               "massage_foot_intensity": "Massage: Foot Intensity",
               "massage_head_intensity": "Massage: Head Intensity",
-              "massage_wave_intensity": "Massage: Wave Intensity"
+              "massage_wave_intensity": "Massage: Wave Intensity",
+              "massage_buttons": "Knoppen voor massagefuncties",
+              "massage_sliders": "Schuifregelaars voor massagesterkte"
+            },
+            "data_description": {
+              "massage_buttons": "Toont de beschikbare massageknoppen (druk op Verzenden om het formulier bij te werken).",
+              "massage_sliders": "Toont de beschikbare massage-schuifregelaars (druk op Verzenden om het formulier bij te werken)."
             }
           },
           "lighting": {
@@ -1193,7 +1199,9 @@
               "label_toggle_light": "Toggle Light",
               "label_under_bed_lights": "Under Bed Lights",
               "label_under_bed_light_level_left": "Onder-bedverlichting links",
-              "label_under_bed_light_level_right": "Onder-bedverlichting rechts"
+              "label_under_bed_light_level_right": "Onder-bedverlichting rechts",
+              "label_massage_buttons": "Knoppen voor massagefuncties",
+              "label_massage_sliders": "Schuifregelaars voor massagesterkte"
             },
             "data_description": {
               "enforce_captions": "Stuurt de benamingen terug als de Woning-app eigen namen toekent. Zet uit om bedieningen in de Woning-app zelf te hernoemen."
@@ -1275,7 +1283,7 @@
             }
           },
           "timed": {
-            "name": "⏱️   Tijdsduur verstellingen",
+            "name": "⏱️   Getimede verstellingen",
             "description": "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
             "data": {
               "timed_auxiliary": "Auxiliary",
@@ -1815,7 +1823,13 @@
               "massage_all_toggle": "Massage: Toggle",
               "massage_foot_intensity": "Massage: Foot Intensity",
               "massage_head_intensity": "Massage: Head Intensity",
-              "massage_wave_intensity": "Massage: Wave Intensity"
+              "massage_wave_intensity": "Massage: Wave Intensity",
+              "massage_buttons": "Knoppen voor massagefuncties",
+              "massage_sliders": "Schuifregelaars voor massagesterkte"
+            },
+            "data_description": {
+              "massage_buttons": "Toont de beschikbare massageknoppen (druk op Verzenden om het formulier bij te werken).",
+              "massage_sliders": "Toont de beschikbare massage-schuifregelaars (druk op Verzenden om het formulier bij te werken)."
             }
           },
           "lighting": {
@@ -2487,7 +2501,9 @@
               "label_toggle_light": "Toggle Light",
               "label_under_bed_lights": "Under Bed Lights",
               "label_under_bed_light_level_left": "Onder-bedverlichting links",
-              "label_under_bed_light_level_right": "Onder-bedverlichting rechts"
+              "label_under_bed_light_level_right": "Onder-bedverlichting rechts",
+              "label_massage_buttons": "Knoppen voor massagefuncties",
+              "label_massage_sliders": "Schuifregelaars voor massagesterkte"
             },
             "data_description": {
               "enforce_captions": "Stuurt de benamingen terug als de Woning-app eigen namen toekent. Zet uit om bedieningen in de Woning-app zelf te hernoemen."
@@ -2569,7 +2585,7 @@
             }
           },
           "timed": {
-            "name": "⏱️   Tijdsduur verstellingen",
+            "name": "⏱️   Getimede verstellingen",
             "description": "Seconden per verstelling (0 = uit, maximaal 30 s). De Woning-app toont twee knoppen per bedsectie, omhoog en omlaag. Bediening van de knop zal de bedsectie dit aantal seconden in de gekozen richting verstellen. Stop onderbreekt een lopende verstelling.",
             "data": {
               "timed_auxiliary": "Auxiliary",
