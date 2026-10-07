@@ -25,12 +25,14 @@ from .const import (
     CONF_BED_DEVICE,
     CONF_HIDDEN,
     CONF_OVERRIDES,
+    CONF_TIMED,
     CONTROLS_BY_KEY,
     KIND_SWITCH,
     LABEL_PREFIX,
     MOTOR_KEYS,
     RENAMED_KEYS,
     SLIDER_KEYS,
+    TIMED_MAX_SECONDS,
 )
 from .detection import (
     DETECTION_GROUPS,
@@ -59,6 +61,8 @@ class Control:
     interrupts_motion: bool = False
     group: str = "positions"
     detected: bool = False
+    # Service call instead of an entity (timed moves): domain, service, data.
+    action: dict[str, Any] | None = None
 
     @property
     def is_slider(self) -> bool:
@@ -197,6 +201,11 @@ def normalize_options(detected: list[DetectedControl], options: dict[str, Any]) 
     return result
 
 
+def data_device_id(data: dict[str, Any]) -> str:
+    """The bed device of an entry's data."""
+    return str(data.get(CONF_BED_DEVICE) or "")
+
+
 def effective_controls(
     hass: HomeAssistant,
     data: dict[str, Any],
@@ -246,6 +255,41 @@ def effective_controls(
                 detected=True,
             )
         )
+    # Timed moves: two push buttons per section with a duration set.
+    timed: dict[str, float] = model.get(CONF_TIMED) or {}
+    by_id = {d.control_id: d for d in detected}
+    for control in list(result):
+        seconds = float(timed.get(control.id) or 0)
+        source = by_id.get(control.id)
+        if seconds <= 0 or source is None or source.timed_motor is None:
+            continue
+        for direction in ("up", "down"):
+            cid = f"timed_{control.id}_{direction}"
+            word = labels.get(f"_timed_{direction}", direction)
+            call_data: dict[str, Any] = {
+                "device_id": data_device_id(data),
+                "motor": source.timed_motor,
+                "direction": direction,
+                "duration_ms": int(min(seconds, TIMED_MAX_SECONDS) * 1000),
+            }
+            if source.side in ("left", "right"):
+                call_data["side"] = source.side
+            result.append(
+                Control(
+                    id=cid,
+                    caption=caption(cid, f"{control.caption} {word}"),
+                    entity_id="",
+                    hk_type=HK_MOMENTARY,
+                    interrupts_motion=True,
+                    group=control.group,
+                    detected=True,
+                    action={
+                        "domain": "adjustable_bed",
+                        "service": "timed_move",
+                        "data": call_data,
+                    },
+                )
+            )
     detected_ids = {d.control_id for d in detected}
     for key, entity in overrides.items():
         if key in detected_ids or key not in CONTROLS_BY_KEY or not entity:

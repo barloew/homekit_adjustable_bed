@@ -26,6 +26,7 @@ Top to bottom:
 | Block | Contents |
 |---|---|
 | Adjustable sections | One slider per section (back, legs, tilt, lumbar, ...) |
+| Timed moves | Seconds per section (0 = off); see below |
 | Quick actions | Flat, Zero G, Memory positions, Stop, Foundation Preset, ... |
 | Massage | Strength sliders and on/off buttons |
 | Lighting | Bed lights, plus free slots for any Home Assistant light |
@@ -45,6 +46,14 @@ Every field holds the matched entity. The entity picker shows the device under e
 
 Only exceptions to the detection defaults are stored, so controls that a later Adjustable Bed
 version detects follow the defaults automatically.
+
+### Timed moves
+
+For every section, enter a number of seconds (0.5 steps, at most 30). A section with a duration
+gets two push buttons in HomeKit, *<section> up* and *<section> down*, which call
+`adjustable_bed.timed_move` for that time on the right motor and side. They suit beds without
+position feedback, where a slider can only raise, lower or stop. A timed move clears the motion
+queue first; *Stop* interrupts it. The buttons take their names from the section.
 
 ### Lighting slots
 

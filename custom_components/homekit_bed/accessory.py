@@ -560,6 +560,7 @@ class ActionChannel:
         entity_id: str,
         *,
         interrupts_motion: bool = False,
+        source: Any = None,
     ) -> None:
         """Create the service."""
         self.bed = bed
@@ -567,7 +568,7 @@ class ActionChannel:
         self.key = key
         self.label = label
         self.interrupts_motion = interrupts_motion
-        self.source = ActionSource(bed.hass, entity_id)
+        self.source = source or ActionSource(bed.hass, entity_id)
         self._reset_unsub: CALLBACK_TYPE | None = None
 
         svc = add_named_service(bed, "Switch", key, label)
@@ -892,6 +893,7 @@ class BedAccessory(Accessory):
         kinds: dict[str, str] | None = None,
         interrupts: set[str] | None = None,
         selects: list[tuple[str, str, str]] | None = None,
+        action_sources: dict[str, Any] | None = None,
         climates: list[tuple[str, str, str]] | None = None,
         mode_names: dict[str, str] | None = None,
     ) -> None:
@@ -952,6 +954,7 @@ class BedAccessory(Accessory):
                     entity_id,
                     interrupts_motion=(spec.interrupts_motion if spec else False)
                     or key in (interrupts or ()),
+                    source=(action_sources or {}).get(key),
                 )
             )
         # The Home app shows the primary service first and sorts the rest by
@@ -1144,6 +1147,8 @@ class BedAccessory(Accessory):
         """Start following the source entities."""
         by_entity: dict[str, list[Any]] = {}
         for channel in [*self.sliders, *self.actions, *self.selects, *self.climates]:
+            if not channel.entity_id:
+                continue  # service-call buttons (timed moves) have no state
             by_entity.setdefault(channel.entity_id, []).append(channel)
             channel.async_update_from_state(self.hass.states.get(channel.entity_id))
 

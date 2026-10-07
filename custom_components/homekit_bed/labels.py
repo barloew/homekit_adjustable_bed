@@ -20,6 +20,7 @@ async def async_default_labels(hass: HomeAssistant) -> dict[str, str]:
     English fallback in const.py is only used if no file could be read.
     """
     labels = {spec.key: spec.fallback for spec in CONTROLS}
+    labels["_timed_up"], labels["_timed_down"] = "up", "down"
     language = hass.config.language or "en"
     try:
         strings = await async_get_translations(hass, language, "selector", [DOMAIN])
@@ -29,6 +30,11 @@ async def async_default_labels(hass: HomeAssistant) -> dict[str, str]:
     for key in labels:
         if value := strings.get(prefix + key):
             labels[key] = value
+    # Words for timed-move buttons ("Back section up").
+    for direction, fallback in (("up", "up"), ("down", "down")):
+        labels[f"_timed_{direction}"] = (
+            strings.get(f"component.{DOMAIN}.selector.timed_move.options.{direction}") or fallback
+        )
     return labels
 
 

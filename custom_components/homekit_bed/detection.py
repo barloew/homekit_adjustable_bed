@@ -35,7 +35,7 @@ from dataclasses import dataclass, field
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 
-from .const import ADJUSTABLE_BED_DOMAIN, CONTROLS
+from .const import ADJUSTABLE_BED_DOMAIN, CONTROLS, TIMED_MOTORS
 from .devices import child_device_ids
 
 # HomeKit control types
@@ -243,6 +243,15 @@ class DetectedControl:
     name: str | None = None  # entity name without the device name
     catalog_key: str | None = None  # legacy control id (stable IIDs/captions)
     lost_alias: bool = False  # another entity took the legacy id
+
+    @property
+    def timed_motor(self) -> str | None:
+        """Motor name for adjustable_bed.timed_move, if this is a section."""
+        if not self.motor:
+            return None
+        axis = self.base.removesuffix("_position")
+        axis = _COVER_TO_NUMBER.get(axis, axis)
+        return axis if axis in TIMED_MOTORS else None
 
     @property
     def control_id(self) -> str:

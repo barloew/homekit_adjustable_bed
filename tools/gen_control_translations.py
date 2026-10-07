@@ -75,6 +75,22 @@ SECTION_TEXT = {
         "add_controls": "Toevoegen aan HomeKit",
     },
 }
+TIMED_TEXT = {
+    "en": (
+        "Timed moves",
+        "Seconds per movement (0 = off). Every section with a duration gets two push buttons in "
+        "HomeKit, up and down, that move it for that time (adjustable_bed.timed_move, at most "
+        "30 s). Useful for beds without position feedback. Stop interrupts a running move.",
+    ),
+    "nl": (
+        "Getimede bewegingen",
+        "Seconden per beweging (0 = uit). Elke sectie met een duur krijgt in HomeKit twee "
+        "drukknoppen, omhoog en omlaag, die haar die tijd laten bewegen "
+        "(adjustable_bed.timed_move, maximaal 30 s). Handig voor bedden zonder standmelding. "
+        "Stop onderbreekt een lopende beweging.",
+    ),
+}
+TIMED_WORDS = {"en": {"up": "up", "down": "down"}, "nl": {"up": "omhoog", "down": "omlaag"}}
 SIDE_NL = {
     "(left)": "(links)",
     "(right)": "(rechts)",
@@ -88,12 +104,18 @@ SIDE_NL = {
 def main(source: str) -> None:
     upstream = json.loads(Path(source).read_text())["entity"]
     names: dict[str, tuple[str, str]] = {}  # id -> (group, english name)
+    motor_ids: set[str] = {"back", "legs", "tilt", "lumbar"}  # sections (timed moves)
     for domain, entries in upstream.items():
         for key, info in entries.items():
             control = classify(domain, key)
             if control is None:
                 continue
             control_id = _CATALOG_ALIAS.get((domain, key)) if control.side is None else None
+            if control.motor:
+                if control_id:
+                    motor_ids.add(f"{domain}_{key}" if key in CATALOG_IDS else key)
+                else:
+                    motor_ids.add(key)
             if control_id:
                 # Catalog controls keep their own names; the entity may still
                 # appear as "<domain>_<key>" when another one took the id.
@@ -173,6 +195,18 @@ def main(source: str) -> None:
             for k in [k for k in sec.get("data", {}) if k.endswith("light_level_2")]:
                 sec["data"].pop(k)
                 sec.get("data_description", {}).pop(k, None)
+        # Timed moves: one seconds field per section, named after the section.
+        timed_text = TIMED_TEXT[lang]
+        sections["timed"] = {
+            "name": timed_text[0],
+            "description": timed_text[1],
+            "data": {
+                f"timed_{mid}": sections["positions"]["data"].get(mid, mid)
+                for mid in sorted(motor_ids)
+                if sections["positions"]["data"].get(mid)
+            },
+        }
+        data["selector"]["timed_move"] = {"options": TIMED_WORDS[lang]}
         sections["add"] = {
             "name": text["add"][0],
             "description": text["add"][1],

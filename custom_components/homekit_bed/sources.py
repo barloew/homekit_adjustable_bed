@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import asyncio
 from math import isfinite
+from typing import Any
 
 from homeassistant.components.cover import (
     ATTR_CURRENT_POSITION,
@@ -325,5 +326,26 @@ class ActionSource:
             service_domain,
             service,
             {ATTR_ENTITY_ID: self.entity_id},
+            blocking=True,
+        )
+
+
+class ServiceActionSource:
+    """A push button that performs a service call (e.g. a timed move)."""
+
+    stateful = False
+
+    def __init__(self, hass: HomeAssistant, action: dict[str, Any]) -> None:
+        """Initialise from {"domain", "service", "data"}."""
+        self.hass = hass
+        self.action = action
+        self.entity_id = ""
+
+    async def async_trigger(self) -> None:
+        """Perform the call and wait for it (a timed move ends by itself)."""
+        await self.hass.services.async_call(
+            self.action["domain"],
+            self.action["service"],
+            dict(self.action["data"]),
             blocking=True,
         )

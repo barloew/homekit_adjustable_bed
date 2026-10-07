@@ -60,6 +60,7 @@ from .labels import (
     async_texts,
     render,
 )
+from .sources import ServiceActionSource
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -151,6 +152,7 @@ class BedHomeKitServer:
         selects = [(c.id, c.caption, c.entity_id) for c in controls if c.hk_type == HK_SELECT]
         climates = [(c.id, c.caption, c.entity_id) for c in controls if c.hk_type == HK_CLIMATE]
         kinds = {c.id: c.hk_type for c in controls if c.is_slider}
+        action_sources = {c.id: ServiceActionSource(hass, c.action) for c in controls if c.action}
         interrupts = {c.id for c in controls if c.interrupts_motion}
         if not sliders and not actions and not selects and not climates:
             _LOGGER.error("%s: no source entities configured", name)
@@ -200,6 +202,7 @@ class BedHomeKitServer:
             kinds=kinds,
             interrupts=interrupts,
             selects=selects,
+            action_sources=action_sources,
             climates=climates,
             mode_names=await async_climate_mode_names(hass),
             color_off={

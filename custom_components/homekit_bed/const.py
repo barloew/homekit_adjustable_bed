@@ -7,7 +7,7 @@ from typing import Final
 
 DOMAIN: Final = "homekit_bed"
 # Keep equal to manifest.json and pyproject.toml (tests/test_version.py).
-VERSION: Final = "4.7.0"
+VERSION: Final = "4.8.0"
 
 # Config entry data
 CONF_BED_DEVICE: Final = "bed_device"
@@ -237,6 +237,23 @@ CONF_AUTO_SELECTED: Final = "auto_controls"  # legacy (<= 4.1), converted
 CONF_HIDDEN: Final = "hidden_controls"
 CONF_ADDED: Final = "added_controls"
 CONF_OVERRIDES: Final = "entity_overrides"
+
+# Timed moves (adjustable_bed.timed_move) per section: {control id: seconds}.
+CONF_TIMED: Final = "timed_moves"
+TIMED_MAX_SECONDS: Final = 30.0  # ha-adjustable-bed accepts 100-30000 ms
+# Motors the timed_move action accepts.
+TIMED_MOTORS: Final = (
+    "back",
+    "right_back",
+    "legs",
+    "head",
+    "feet",
+    "tilt",
+    "lumbar",
+    "bed_height",
+    "stair",
+    "tv_lift",
+)
 
 # Blinds sliders shown upside down in HomeKit (list of control keys).
 CONF_INVERTED: Final = "inverted"

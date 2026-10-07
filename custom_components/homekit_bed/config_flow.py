@@ -39,6 +39,7 @@ from .const import (
     CONF_OVERRIDES,
     CONF_PORT,
     CONF_PRIMARY,
+    CONF_TIMED,
     CONTROLS,
     CONTROLS_BY_KEY,
     DEFAULT_COLOR,
@@ -51,6 +52,7 @@ from .const import (
     KIND_LIGHT,
     LABEL_PREFIX,
     SOURCE_DOMAINS,
+    TIMED_MAX_SECONDS,
 )
 from .controls import Control, effective_controls, normalize_options, selected_ids
 from .detection import DETECTION_GROUPS, DetectedControl, _bed_entries, detect_controls
@@ -63,6 +65,8 @@ SECTION_CAPTIONS = "captions"
 SECTION_LAYOUT = "layout"
 SECTION_ADD = "add"
 SECTION_DISPLAY = "display"
+SECTION_TIMED = "timed"
+TIMED_PREFIX = "timed_"
 CONF_ADD_CONTROLS = "add_controls"
 
 # Entity domains per HomeKit type in the linked-bed form.
@@ -278,6 +282,12 @@ class BedControlsFormMixin:
                 model[CONF_INVERTED] = user_input[SECTION_DISPLAY][CONF_INVERTED]
             if CONF_PRIMARY in (user_input.get(SECTION_LAYOUT) or {}):
                 model[CONF_PRIMARY] = user_input[SECTION_LAYOUT][CONF_PRIMARY]
+            timed_in = user_input.get(SECTION_TIMED) or {}
+            model[CONF_TIMED] = {
+                key.removeprefix(TIMED_PREFIX): float(seconds)
+                for key, seconds in timed_in.items()
+                if seconds and float(seconds) > 0
+            }
             model[CONF_HIDDEN] = sorted(hidden)
             model[CONF_ADDED] = sorted(added)
             model[CONF_OVERRIDES] = overrides
@@ -303,7 +313,7 @@ class BedControlsFormMixin:
         shown: list[str] = []
         for group in DETECTION_GROUPS:
             fields: dict[Any, Any] = {}
-            members = [c for c in controls if c.group == group]
+            members = [c for c in controls if c.group == group and not c.action]
             if group == "lighting":
                 # Free slots for any HA light (e.g. Hue next to / under the bed);
                 # a combined bed gets them per side.
@@ -335,6 +345,44 @@ class BedControlsFormMixin:
                 sections[vol.Required(group)] = section(vol.Schema(fields), {"collapsed": False})
         self._shown = shown
 
+        # Timed moves: seconds per section, right after the sections.
+        timed_now: dict[str, float] = model.get(CONF_TIMED) or {}
+        timed_fields: dict[Any, Any] = {}
+        for control in controls:
+            source = by_id.get(control.id)
+            if control.action or source is None or source.timed_motor is None:
+                continue
+            timed_fields[
+                vol.Optional(
+                    f"{TIMED_PREFIX}{control.id}",
+                    default=float(timed_now.get(control.id, 0)),
+                )
+            ] = selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=0,
+                    max=TIMED_MAX_SECONDS,
+                    step=0.5,
+                    unit_of_measurement="s",
+                    mode=selector.NumberSelectorMode.BOX,
+                )
+            )
+        if timed_fields:
+            ordered: dict[Any, Any] = {}
+            for marker, value in sections.items():
+                ordered[marker] = value
+                if str(marker) == "positions":
+                    ordered[vol.Required(SECTION_TIMED)] = section(
+                        vol.Schema(timed_fields), {"collapsed": False}
+                    )
+            if not any(str(k) == SECTION_TIMED for k in ordered):
+                ordered = {
+                    vol.Required(SECTION_TIMED): section(
+                        vol.Schema(timed_fields), {"collapsed": False}
+                    ),
+                    **ordered,
+                }
+            sections = ordered
+
         groups = await async_group_names(self.hass)
         chosen = selected_ids(detected, model)
         available = [d for d in detected if d.control_id not in chosen]
@@ -365,6 +413,7 @@ class BedControlsFormMixin:
         captions: dict[Any, Any] = {
             vol.Optional(f"{LABEL_PREFIX}{c.id}", default=c.caption): selector.TextSelector()
             for c in controls
+            if not c.action  # timed-move buttons follow their section's name
         }
         captions[
             vol.Optional(

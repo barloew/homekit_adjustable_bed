@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.0
+- Timed moves: set seconds per bed section in the form; each section with a duration gets
+  *up* and *down* push buttons in HomeKit that call `adjustable_bed.timed_move` (side-aware,
+  at most 30 s). Stop interrupts a running move.
+
 ## 4.7.0
 - Python 3.14 and Home Assistant 2026.9.0 minimum; tooling, CI and documentation aligned with
   Adjustable Bed (uv, ruff, pyright, pytest, HACS, hassfest).
