@@ -15,9 +15,11 @@ User interface languages: English and Dutch.
 
 ## Why HomeKit Adjustable Bed
 
-Without it, the way to Apple Home is Home Assistant's HomeKit Bridge plus scripts (see Adjustable
-Bed's [HomeKit guide](https://github.com/kristofferR/ha-adjustable-bed/blob/main/docs/HOMEKIT.md)).
-That works, but has limits this integration removes.
+Adjustable Bed's own route to Apple Home, Home Assistant's HomeKit Bridge plus scripts (see its
+[HomeKit guide](https://github.com/kristofferR/ha-adjustable-bed/blob/main/docs/HOMEKIT.md)), works
+well and is probably enough for most users. This integration started from two wishes that route
+cannot meet: exact positions, and all controls of a bed in one tile. It was then designed so it
+could serve other Adjustable Bed users too, which added the points below.
 
 ### One accessory instead of many tiles
 
