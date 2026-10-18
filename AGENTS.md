@@ -4,7 +4,7 @@ Guidance for agents working on this repository.
 
 ## Shared rules with Adjustable Bed
 
-This integration is a companion of
+This integration runs in step with
 [kristofferR/ha-adjustable-bed](https://github.com/kristofferR/ha-adjustable-bed) and follows
 its `AGENTS.md` for everything not covered here, in particular:
 
@@ -16,8 +16,8 @@ its `AGENTS.md` for everything not covered here, in particular:
 
 ## Project overview
 
-HomeKit Bed publishes one Adjustable Bed device as one HomeKit accessory (HAP-python inside Home
-Assistant). Start with [docs/README.md](docs/README.md) and
+HomeKit Adjustable Bed publishes one Adjustable Bed device as one HomeKit accessory (HAP-python
+inside Home Assistant). Start with [docs/README.md](docs/README.md) and
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Rules

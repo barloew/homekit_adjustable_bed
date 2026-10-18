@@ -9,8 +9,8 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.config_flow import autodetect_entities
-from custom_components.homekit_bed.const import DOMAIN
+from custom_components.homekit_adjustable_bed.config_flow import autodetect_entities
+from custom_components.homekit_adjustable_bed.const import DOMAIN
 
 ADDR = "AA:BB:CC:DD:EE:FF"
 
@@ -89,14 +89,14 @@ async def test_full_flow(hass: HomeAssistant, mock_async_zeroconf) -> None:
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
     assert result["type"] is FlowResultType.FORM
-    from custom_components.homekit_bed.vol import vol
+    from custom_components.homekit_adjustable_bed.vol import vol
 
     for marker in result["data_schema"].schema:
         if marker == "bed_device":
             assert marker.default is vol.UNDEFINED
             assert marker.description == {"suggested_value": device_id}
     with patch(
-        "custom_components.homekit_bed.config_flow.async_port_is_free",
+        "custom_components.homekit_adjustable_bed.config_flow.async_port_is_free",
         return_value=True,
     ):
         result = await hass.config_entries.flow.async_configure(
@@ -110,7 +110,7 @@ async def test_full_flow(hass: HomeAssistant, mock_async_zeroconf) -> None:
 
     secs = _sections(result)
     assert "back" in secs["positions"] and "stop" in secs["presets"]
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         result = await hass.config_entries.flow.async_configure(
             result["flow_id"], _submit_unchanged(result)
         )
@@ -126,7 +126,7 @@ async def test_no_controls_error(hass: HomeAssistant, mock_async_zeroconf) -> No
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
     with patch(
-        "custom_components.homekit_bed.config_flow.async_port_is_free",
+        "custom_components.homekit_adjustable_bed.config_flow.async_port_is_free",
         return_value=True,
     ):
         result = await hass.config_entries.flow.async_configure(
@@ -140,8 +140,8 @@ async def test_no_controls_error(hass: HomeAssistant, mock_async_zeroconf) -> No
 
 async def test_migrate_v1(hass: HomeAssistant, tmp_path) -> None:
     """v1 single 'memory' becomes memory_1 and the old pairing is dropped."""
-    from custom_components.homekit_bed import async_migrate_entry
-    from custom_components.homekit_bed.server import legacy_persist_file_path
+    from custom_components.homekit_adjustable_bed import async_migrate_entry
+    from custom_components.homekit_adjustable_bed.server import legacy_persist_file_path
 
     entry = MockConfigEntry(
         domain=DOMAIN,
@@ -185,7 +185,7 @@ async def test_options_preview(hass: HomeAssistant, mock_async_zeroconf) -> None
         },
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(

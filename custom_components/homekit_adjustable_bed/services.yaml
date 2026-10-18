@@ -4,11 +4,11 @@ reset_pairing:
       required: false
       selector:
         config_entry:
-          integration: homekit_bed
+          integration: homekit_adjustable_bed
 push_captions:
   fields:
     config_entry_id:
       required: false
       selector:
         config_entry:
-          integration: homekit_bed
+          integration: homekit_adjustable_bed

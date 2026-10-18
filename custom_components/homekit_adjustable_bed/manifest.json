@@ -1,6 +1,6 @@
 {
-  "domain": "homekit_bed",
-  "name": "HomeKit Bed Aggregator",
+  "domain": "homekit_adjustable_bed",
+  "name": "HomeKit Adjustable Bed",
   "codeowners": [],
   "config_flow": true,
   "dependencies": [
@@ -8,10 +8,10 @@
     "network",
     "zeroconf"
   ],
-  "documentation": "https://github.com/your-name/homekit_bed",
+  "documentation": "https://github.com/your-name/homekit_adjustable_bed",
   "integration_type": "service",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/your-name/homekit_bed/issues",
+  "issue_tracker": "https://github.com/your-name/homekit_adjustable_bed/issues",
   "loggers": [
     "pyhap"
   ],
@@ -21,5 +21,5 @@
     "base36>=0.1.1"
   ],
   "single_config_entry": false,
-  "version": "4.11.2"
+  "version": "5.0.0"
 }

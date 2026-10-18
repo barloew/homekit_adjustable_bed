@@ -7,7 +7,7 @@ they check that every structural pattern gets a sensible HomeKit default.
 import pytest
 from homeassistant.core import HomeAssistant
 
-from custom_components.homekit_bed.detection import detect_controls
+from custom_components.homekit_adjustable_bed.detection import detect_controls
 
 from .test_detection import _bed
 
@@ -189,7 +189,9 @@ async def test_family_fields_have_names(hass: HomeAssistant, family: str) -> Non
     import json
     from pathlib import Path
 
-    base = Path(__file__).parents[1] / "custom_components" / "homekit_bed" / "translations"
+    base = (
+        Path(__file__).parents[1] / "custom_components" / "homekit_adjustable_bed" / "translations"
+    )
     keys, _ = FAMILIES[family]
     device_id = _bed(hass, keys)
     for lang in ("en", "nl"):

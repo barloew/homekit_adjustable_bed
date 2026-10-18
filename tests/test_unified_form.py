@@ -9,13 +9,13 @@ from homeassistant.data_entry_flow import section
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.const import DOMAIN
-from custom_components.homekit_bed.controls import effective_controls, normalize_options
-from custom_components.homekit_bed.detection import detect_controls
+from custom_components.homekit_adjustable_bed.const import DOMAIN
+from custom_components.homekit_adjustable_bed.controls import effective_controls, normalize_options
+from custom_components.homekit_adjustable_bed.detection import detect_controls
 
 from .test_detection import ADDR, JENSEN, _bed
 
-BASE = Path(__file__).parents[1] / "custom_components" / "homekit_bed"
+BASE = Path(__file__).parents[1] / "custom_components" / "homekit_adjustable_bed"
 LANGS = {p.stem: json.loads(p.read_text()) for p in (BASE / "translations").glob("*.json")}
 
 
@@ -67,7 +67,7 @@ async def _open(hass, options):
         options=options,
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(

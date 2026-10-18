@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.0.0
+- Renamed to **HomeKit Adjustable Bed**; the integration domain is now `homekit_adjustable_bed`
+  (actions `homekit_adjustable_bed.reset_pairing` and `homekit_adjustable_bed.push_captions`).
+  Breaking: remove the old HomeKit Bed entries and the `homekit_bed` folder first, then set up
+  the beds again and pair them anew in the Home app.
+- README: why this integration (what it adds to the HomeKit Bridge route) and how it runs in
+  step with Adjustable Bed.
+
 ## 4.11.2
 - New brand icon: side view of a bed with a headboard, a box spring with a topper and the back
   section raised.

@@ -7,7 +7,7 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.detection import _entity_key, detect_controls
+from custom_components.homekit_adjustable_bed.detection import _entity_key, detect_controls
 
 
 def test_pair_unique_ids() -> None:
@@ -92,14 +92,14 @@ async def test_combined_form_has_two_light_slots(hass: HomeAssistant, mock_async
     parent, kids = _setup(hass)
 
     entry = MockConfigEntry(
-        domain="homekit_bed",
+        domain="homekit_adjustable_bed",
         version=2,
         data={"name": "Ons Bed", "port": 21070, "bed_device": parent},
         options={},
     )
     entry.add_to_hass(hass)
     with (
-        patch("custom_components.homekit_bed.async_setup_entry", return_value=True),
+        patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True),
     ):
         await hass.config_entries.async_setup(entry.entry_id)
         result = await hass.config_entries.options.async_init(entry.entry_id)
@@ -119,7 +119,7 @@ async def test_combined_form_has_two_light_slots(hass: HomeAssistant, mock_async
 
 
 def test_renamed_slots_migrate() -> None:
-    from custom_components.homekit_bed.controls import migrate_renamed
+    from custom_components.homekit_adjustable_bed.controls import migrate_renamed
 
     old = {
         "entity_overrides": {"light_level_2": "light.hue"},
@@ -137,7 +137,7 @@ def test_renamed_slots_migrate() -> None:
 
 async def test_hardware_info_of_real_child(hass: HomeAssistant, caplog) -> None:
     """Manufacturer/model come from the parent; the child is never asked."""
-    from custom_components.homekit_bed.devices import hardware_info
+    from custom_components.homekit_adjustable_bed.devices import hardware_info
 
     _parent, kids = _setup(hass)
     assert hardware_info(hass, kids["Barloew's bed"]) == ("Jensen", "JMC400")

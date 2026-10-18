@@ -7,10 +7,10 @@ from pyhap.accessory_driver import AccessoryDriver
 from pyhap.loader import get_loader
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.accessory import BedAccessory
-from custom_components.homekit_bed.const import DOMAIN
-from custom_components.homekit_bed.controls import effective_controls
-from custom_components.homekit_bed.sources import ServiceActionSource
+from custom_components.homekit_adjustable_bed.accessory import BedAccessory
+from custom_components.homekit_adjustable_bed.const import DOMAIN
+from custom_components.homekit_adjustable_bed.controls import effective_controls
+from custom_components.homekit_adjustable_bed.sources import ServiceActionSource
 
 from .test_detection import JENSEN, _bed
 from .test_unified_form import _sections, _submit_unchanged
@@ -61,7 +61,7 @@ async def _open_form(hass, keys):
         options={},
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(

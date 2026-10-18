@@ -1,8 +1,8 @@
-"""HomeKit Bed against the Adjustable Bed release in tests/fixtures/adjustable_bed.json.
+"""HomeKit Adjustable Bed against the Adjustable Bed release in tests/fixtures/adjustable_bed.json.
 
 The fixture is written by tools/sync_adjustable_bed.py. These tests fail when the integration
 falls behind that release: an entity without a HomeKit type or form name, a timed_move motor
-HomeKit Bed does not offer, or documentation that no longer matches.
+HomeKit Adjustable Bed does not offer, or documentation that no longer matches.
 """
 
 from __future__ import annotations
@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-from custom_components.homekit_bed.const import TIMED_MOTORS
-from custom_components.homekit_bed.detection import (
+from custom_components.homekit_adjustable_bed.const import TIMED_MOTORS
+from custom_components.homekit_adjustable_bed.detection import (
     _CATALOG_IDS,
     DETECTION_GROUPS,
     G_FIRMNESS,
@@ -36,7 +36,9 @@ ENTITIES = [
 
 def _form_names(lang: str) -> dict[str, str]:
     data = json.loads(
-        (ROOT / "custom_components" / "homekit_bed" / "translations" / f"{lang}.json").read_text()
+        (
+            ROOT / "custom_components" / "homekit_adjustable_bed" / "translations" / f"{lang}.json"
+        ).read_text()
     )
     sections = data["options"]["step"]["controls"]["sections"]
     return {
@@ -73,7 +75,9 @@ def test_every_entity_has_a_form_and_caption_name(lang: str) -> None:
 
 def test_every_entity_is_named_in_its_own_group() -> None:
     data = json.loads(
-        (ROOT / "custom_components" / "homekit_bed" / "translations" / "en.json").read_text()
+        (
+            ROOT / "custom_components" / "homekit_adjustable_bed" / "translations" / "en.json"
+        ).read_text()
     )
     sections = data["options"]["step"]["controls"]["sections"]
     for domain, key, _ in ENTITIES:

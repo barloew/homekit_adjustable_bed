@@ -50,6 +50,6 @@ jobs:
           add-paths: |
             CHANGELOG.md
             README.md
-            custom_components/homekit_bed
+            custom_components/homekit_adjustable_bed
             docs/SUPPORTED_BEDS.md
             tests/fixtures/adjustable_bed.json

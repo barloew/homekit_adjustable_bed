@@ -1,1 +1,1 @@
-"""Tests for homekit_bed."""
+"""Tests for homekit_adjustable_bed."""

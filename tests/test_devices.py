@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant
 
-from custom_components.homekit_bed import devices
+from custom_components.homekit_adjustable_bed import devices
 
 
 class _Child:

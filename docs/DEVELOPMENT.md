@@ -82,7 +82,7 @@ optional tag) and opens a pull request with the report when a new release is out
 
 Checked locally: hassfest (Home Assistant 2026.10) passes, and `tests/test_hacs_requirements.py`
 covers what HACS reads from the repository: `hacs.json`, the brand images in
-`custom_components/homekit_bed/brand/` (`icon.png` 256 px and `icon@2x.png` 512 px, with `dark_`
+`custom_components/homekit_adjustable_bed/brand/` (`icon.png` 256 px and `icon@2x.png` 512 px, with `dark_`
 variants for dark themes; sources in `docs/brand/`), unpinned requirements and the MIT license.
 
 What HACS checks on GitHub itself, to set once the repository is public:

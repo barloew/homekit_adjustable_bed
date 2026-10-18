@@ -1,13 +1,13 @@
-"""Constants for the HomeKit Bed Aggregator integration."""
+"""Constants for the HomeKit Adjustable Bed integration."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Final
 
-DOMAIN: Final = "homekit_bed"
+DOMAIN: Final = "homekit_adjustable_bed"
 # Keep equal to manifest.json and pyproject.toml (tests/test_version.py).
-VERSION: Final = "4.11.2"
+VERSION: Final = "5.0.0"
 
 # Config entry data
 CONF_BED_DEVICE: Final = "bed_device"
@@ -301,7 +301,7 @@ SETTLE_SECONDS: Final = 2.0
 # Report "stopped" once current is this close to target (percentage points).
 POSITION_TOLERANCE: Final = 3
 
-QR_VIEW_URL: Final = "/api/homekit_bed/pairingqr"
+QR_VIEW_URL: Final = "/api/homekit_adjustable_bed/pairingqr"
 
 # AID of the bed accessory behind the (invisible) HAP bridge.
 BED_AID: Final = 2

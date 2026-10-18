@@ -126,7 +126,7 @@ class MotionQueue:
         self._pending[channel] = target
         if self._task is None or self._task.done():
             self._task = self.entry.async_create_background_task(
-                self.hass, self._async_run(), f"homekit_bed motion {self.entry.title}"
+                self.hass, self._async_run(), f"homekit_adjustable_bed motion {self.entry.title}"
             )
 
     @callback
@@ -1024,7 +1024,9 @@ class BedAccessory(Accessory):
                 if notify_on_error:
                     self._async_notify_error(label, err, key)
 
-        self.entry.async_create_background_task(self.hass, _runner(), f"homekit_bed {label}")
+        self.entry.async_create_background_task(
+            self.hass, _runner(), f"homekit_adjustable_bed {label}"
+        )
 
     @callback
     def _async_notify_error(self, label: str, err: Exception, key: str | None) -> None:
@@ -1041,7 +1043,7 @@ class BedAccessory(Accessory):
             self.hass,
             message,
             render(self.texts, "notification_title"),
-            f"homekit_bed_{self.entry.entry_id}_action_error",
+            f"homekit_adjustable_bed_{self.entry.entry_id}_action_error",
         )
 
     def add_late_char(

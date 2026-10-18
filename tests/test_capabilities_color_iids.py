@@ -13,10 +13,10 @@ from pyhap.accessory_driver import AccessoryDriver
 from pyhap.loader import get_loader
 from pytest_homeassistant_custom_component.common import MockConfigEntry, async_fire_time_changed
 
-from custom_components.homekit_bed.accessory import BedAccessory
-from custom_components.homekit_bed.config_flow import offered_keys
-from custom_components.homekit_bed.const import ALL_KEYS, DOMAIN
-from custom_components.homekit_bed.iids import StableIIDManager
+from custom_components.homekit_adjustable_bed.accessory import BedAccessory
+from custom_components.homekit_adjustable_bed.config_flow import offered_keys
+from custom_components.homekit_adjustable_bed.const import ALL_KEYS, DOMAIN
+from custom_components.homekit_adjustable_bed.iids import StableIIDManager
 
 ADDR = "11:22:33:44:55:66"
 POS = {"min": 0, "max": 100, "step": 1}
@@ -83,7 +83,9 @@ async def test_config_flow_shows_detected_only(hass: HomeAssistant, mock_async_z
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
-    with patch("custom_components.homekit_bed.config_flow.async_port_is_free", return_value=True):
+    with patch(
+        "custom_components.homekit_adjustable_bed.config_flow.async_port_is_free", return_value=True
+    ):
         result = await hass.config_entries.flow.async_configure(
             result["flow_id"], {"name": "Bed", "bed_device": device_id, "port": 21070}
         )
@@ -337,7 +339,7 @@ async def _controls_form(hass, options):
         domain=DOMAIN, version=2, data={"name": "Bed", "port": 21070}, options=options
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     result = await hass.config_entries.options.async_init(entry.entry_id)
     assert result["menu_options"] == ["controls", "pairing"]

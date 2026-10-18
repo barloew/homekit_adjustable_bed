@@ -18,15 +18,15 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from custom_components.homekit_bed.detection import (  # noqa: E402
+from custom_components.homekit_adjustable_bed.detection import (  # noqa: E402
     _CATALOG_ALIAS,
     classify,
 )
-from custom_components.homekit_bed.detection import (
+from custom_components.homekit_adjustable_bed.detection import (
     _CATALOG_IDS as CATALOG_IDS,
 )
 
-BASE = Path(__file__).parents[1] / "custom_components" / "homekit_bed"
+BASE = Path(__file__).parents[1] / "custom_components" / "homekit_adjustable_bed"
 GROUPS = ("positions", "presets", "massage", "lighting", "climate", "firmness", "settings")
 # Section icons. icons.json carries the MDI icons (valid for hassfest, but the
 # Home Assistant frontend does not show icons for config-flow sections yet),

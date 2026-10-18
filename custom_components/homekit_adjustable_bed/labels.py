@@ -41,8 +41,8 @@ async def async_default_labels(hass: HomeAssistant) -> dict[str, str]:
 # Notification texts: translations/<lang>.json -> exceptions.<key>.message.
 # English fallbacks, only used when no translation file could be read.
 FALLBACK_TEXTS: dict[str, str] = {
-    "notification_title": "HomeKit Bed",
-    "pairing_title": "Pair HomeKit Bed",
+    "notification_title": "HomeKit Adjustable Bed",
+    "pairing_title": "Pair HomeKit Adjustable Bed",
     "pairing_message": (
         "Add **{name}** in the Home app: scan the QR code or enter this code:"
         "\n### {pin}\n![QR]({qr_url})"
@@ -59,7 +59,7 @@ FALLBACK_TEXTS: dict[str, str] = {
     ),
     "memory_one_slot": (
         "This Jensen box (type 4) has only one memory slot. Remove the other "
-        "memory switches in the HomeKit Bed options."
+        "memory switches in the HomeKit Adjustable Bed options."
     ),
 }
 

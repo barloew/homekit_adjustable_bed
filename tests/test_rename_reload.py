@@ -7,8 +7,8 @@ from unittest.mock import AsyncMock, patch
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed import _async_update_listener, _snapshot
-from custom_components.homekit_bed.server import BedHomeKitServer
+from custom_components.homekit_adjustable_bed import _async_update_listener, _snapshot
+from custom_components.homekit_adjustable_bed.server import BedHomeKitServer
 
 
 def _free_port() -> int:
@@ -20,7 +20,7 @@ def _free_port() -> int:
 def _entry(hass, port):
     hass.states.async_set("number.a", "10", {"min": 0, "max": 100, "step": 1})
     entry = MockConfigEntry(
-        domain="homekit_bed",
+        domain="homekit_adjustable_bed",
         title="Ons bed",
         version=2,
         data={"name": "Ons bed", "port": port},
@@ -96,7 +96,7 @@ async def test_reset_pairing_gives_new_identity(
     import os
     import uuid
 
-    from custom_components.homekit_bed.server import iid_file_path
+    from custom_components.homekit_adjustable_bed.server import iid_file_path
 
     hass.config.config_dir = str(tmp_path)
     (tmp_path / ".storage").mkdir()

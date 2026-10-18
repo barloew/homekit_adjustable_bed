@@ -7,10 +7,10 @@ from pyhap.accessory_driver import AccessoryDriver
 from pyhap.loader import get_loader
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.accessory import BedAccessory
-from custom_components.homekit_bed.const import DOMAIN
-from custom_components.homekit_bed.controls import effective_controls
-from custom_components.homekit_bed.detection import classify, detect_controls
+from custom_components.homekit_adjustable_bed.accessory import BedAccessory
+from custom_components.homekit_adjustable_bed.const import DOMAIN
+from custom_components.homekit_adjustable_bed.controls import effective_controls
+from custom_components.homekit_adjustable_bed.detection import classify, detect_controls
 
 ADDR = "AA:BB:CC:00:11:22"
 

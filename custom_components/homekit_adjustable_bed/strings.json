@@ -1,5 +1,5 @@
 {
-  "title": "HomeKit Bed Aggregator",
+  "title": "HomeKit Adjustable Bed",
   "config": {
     "step": {
       "user": {
@@ -3836,10 +3836,10 @@
   },
   "exceptions": {
     "notification_title": {
-      "message": "HomeKit Bed"
+      "message": "HomeKit Adjustable Bed"
     },
     "pairing_title": {
-      "message": "Pair HomeKit Bed"
+      "message": "Pair HomeKit Adjustable Bed"
     },
     "pairing_message": {
       "message": "Add **{name}** in the Home app: scan the QR code or enter this code:\n### {pin}\n![QR]({qr_url})"
@@ -3854,7 +3854,7 @@
       "message": "This Jensen bed keeps memory positions in Home Assistant. Put the bed in the wanted position and press *Save to Memory {slot}* (button.*_program_memory_{slot}) of Adjustable Bed once."
     },
     "memory_one_slot": {
-      "message": "This Jensen box (type 4) has only one memory slot. Remove the other memory switches in the HomeKit Bed options."
+      "message": "This Jensen box (type 4) has only one memory slot. Remove the other memory switches in the HomeKit Adjustable Bed options."
     }
   },
   "services": {

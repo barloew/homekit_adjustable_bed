@@ -7,7 +7,7 @@ from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers.selector import QrCodeSelector
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.const import DOMAIN
+from custom_components.homekit_adjustable_bed.const import DOMAIN
 
 
 class FakeServer:
@@ -36,7 +36,7 @@ async def _open_pairing(hass, server):
         options={"back": "number.a", "label_back": "Rug"},
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     if server is not None:
         entry.runtime_data = server

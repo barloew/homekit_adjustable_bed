@@ -9,7 +9,7 @@ import pytest
 from PIL import Image
 
 ROOT = Path(__file__).parents[1]
-INTEGRATION = ROOT / "custom_components" / "homekit_bed"
+INTEGRATION = ROOT / "custom_components" / "homekit_adjustable_bed"
 
 
 @pytest.mark.parametrize(

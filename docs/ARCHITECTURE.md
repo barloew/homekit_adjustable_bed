@@ -4,7 +4,7 @@
 
 The HomeKit Bridge of Home Assistant creates one accessory per entity and does not support
 `number` entities, which Adjustable Bed uses for real positions and massage levels. One accessory
-with many controls therefore needs its own HAP accessory. HomeKit Bed runs HAP-python (the
+with many controls therefore needs its own HAP accessory. HomeKit Adjustable Bed runs HAP-python (the
 library the HomeKit Bridge uses) inside Home Assistant's event loop and zeroconf instance, one
 server per bed, with pairing state under `.storage`.
 

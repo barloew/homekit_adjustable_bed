@@ -1,4 +1,4 @@
-"""Config flow for HomeKit Bed Aggregator."""
+"""Config flow for HomeKit Adjustable Bed."""
 
 from __future__ import annotations
 

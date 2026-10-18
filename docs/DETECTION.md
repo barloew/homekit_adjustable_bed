@@ -1,9 +1,9 @@
 # Detection
 
-Adjustable Bed only creates entities for what a bed can do. HomeKit Bed reads those entities from
+Adjustable Bed only creates entities for what a bed can do. HomeKit Adjustable Bed reads those entities from
 the entity registry, recognises each by its `translation_key` (the `unique_id` key as fallback,
 for `<address>_<key>` and combined beds' `pair_<hex>_<key>`) and maps it with the rules in
-`custom_components/homekit_bed/detection.py`.
+`custom_components/homekit_adjustable_bed/detection.py`.
 
 ## Mapping
 

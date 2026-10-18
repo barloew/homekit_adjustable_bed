@@ -213,7 +213,7 @@ class BedHomeKitServer:
         bridge.set_info_service(
             firmware_revision=VERSION,
             manufacturer="Home Assistant",
-            model="HomeKit Bed Aggregator",
+            model="HomeKit Adjustable Bed",
             serial_number=f"{entry.entry_id}-bridge",
         )
         bridge.add_accessory(accessory)
@@ -238,7 +238,7 @@ class BedHomeKitServer:
             self.driver = self.accessory = None
             return
         self._started = True
-        _LOGGER.info("HomeKit bed accessory %s running on port %s", name, port)
+        _LOGGER.info("HomeKit Adjustable Bed accessory %s running on port %s", name, port)
 
         if not driver.state.paired:
             self.async_show_setup_message()
@@ -263,7 +263,7 @@ class BedHomeKitServer:
             try:
                 await self.driver.async_stop()
             except Exception:  # noqa: BLE001
-                _LOGGER.exception("Error while stopping HomeKit bed accessory")
+                _LOGGER.exception("Error while stopping HomeKit Adjustable Bed accessory")
         self._started = False
         self.driver = self.accessory = None
         # Like the HA HomeKit Bridge: wait until the port is really free, so an
@@ -294,7 +294,7 @@ class BedHomeKitServer:
             secret,
             buffer.getvalue(),
         )
-        _LOGGER.info("HomeKit bed %s pincode: %s", self.entry.title, pin)
+        _LOGGER.info("HomeKit Adjustable Bed %s pincode: %s", self.entry.title, pin)
         persistent_notification.async_create(
             self.hass,
             render(

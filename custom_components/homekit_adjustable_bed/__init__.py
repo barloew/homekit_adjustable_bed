@@ -1,4 +1,4 @@
-"""HomeKit Bed Aggregator.
+"""HomeKit Adjustable Bed.
 
 Publishes an adjustable bed (e.g. a Jensen JMC400 via kristofferR/ha-adjustable-bed)
 as ONE HomeKit accessory with four sliders and two switches.
@@ -98,7 +98,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await hass.async_add_executor_job(_remove_if_exists, path)
         hass.config_entries.async_update_entry(entry, options=options, version=2)
         _LOGGER.warning(
-            "HomeKit Bed %s migrated to v2: remove the old bed from the Home app "
+            "HomeKit Adjustable Bed %s migrated to v2: remove the old bed from the Home app "
             "and pair again with the new code",
             entry.title,
         )
@@ -157,7 +157,7 @@ class PairingQRView(HomeAssistantView):
     """Serve the pairing QR code referenced by the notification."""
 
     url = QR_VIEW_URL
-    name = "api:homekit_bed:pairingqr"
+    name = "api:homekit_adjustable_bed:pairingqr"
     requires_auth = False  # protected by a one-time random secret
 
     def __init__(self, hass: HomeAssistant) -> None:

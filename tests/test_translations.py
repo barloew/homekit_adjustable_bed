@@ -12,10 +12,10 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import section
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.homekit_bed.const import ALL_KEYS, DOMAIN
-from custom_components.homekit_bed.labels import FALLBACK_TEXTS
+from custom_components.homekit_adjustable_bed.const import ALL_KEYS, DOMAIN
+from custom_components.homekit_adjustable_bed.labels import FALLBACK_TEXTS
 
-BASE = Path(__file__).parents[1] / "custom_components" / "homekit_bed"
+BASE = Path(__file__).parents[1] / "custom_components" / "homekit_adjustable_bed"
 EN = json.loads((BASE / "translations" / "en.json").read_text())
 LANGS = {p.stem: json.loads(p.read_text()) for p in (BASE / "translations").glob("*.json")}
 
@@ -80,7 +80,9 @@ async def test_every_config_field_has_a_label(hass: HomeAssistant, mock_async_ze
     )
     for lang in LANGS.values():
         _assert_form_translated(lang["config"], "user", result["data_schema"])
-    with patch("custom_components.homekit_bed.config_flow.async_port_is_free", return_value=True):
+    with patch(
+        "custom_components.homekit_adjustable_bed.config_flow.async_port_is_free", return_value=True
+    ):
         result = await hass.config_entries.flow.async_configure(
             result["flow_id"], {"name": "Bed", "port": 21070}
         )
@@ -94,7 +96,7 @@ async def test_every_options_field_has_a_label(hass: HomeAssistant, mock_async_z
         domain=DOMAIN, version=2, data={"name": "Bed", "port": 21070}, options=options
     )
     entry.add_to_hass(hass)
-    with patch("custom_components.homekit_bed.async_setup_entry", return_value=True):
+    with patch("custom_components.homekit_adjustable_bed.async_setup_entry", return_value=True):
         await hass.config_entries.async_setup(entry.entry_id)
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(
@@ -106,16 +108,20 @@ async def test_every_options_field_has_a_label(hass: HomeAssistant, mock_async_z
 
 async def test_default_captions_follow_ha_language(hass: HomeAssistant) -> None:
     """Captions come from the JSON of the HA language, not from code."""
-    from custom_components.homekit_bed.labels import async_default_labels
+    from custom_components.homekit_adjustable_bed.labels import async_default_labels
 
     nl = LANGS["nl"]["selector"]["control"]["options"]
     flat = {f"component.{DOMAIN}.selector.control.options.{k}": v for k, v in nl.items()}
     hass.config.language = "nl"
-    with patch("custom_components.homekit_bed.labels.async_get_translations", return_value=flat):
+    with patch(
+        "custom_components.homekit_adjustable_bed.labels.async_get_translations", return_value=flat
+    ):
         labels = await async_default_labels(hass)
     assert labels["back"] == "Rugdeel" and labels["flat"] == "Bed vlak"
     # Without translations the English fallback in code is used.
-    with patch("custom_components.homekit_bed.labels.async_get_translations", return_value={}):
+    with patch(
+        "custom_components.homekit_adjustable_bed.labels.async_get_translations", return_value={}
+    ):
         labels = await async_default_labels(hass)
     assert labels["back"] == "Head section"
 

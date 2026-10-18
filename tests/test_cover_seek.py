@@ -5,8 +5,8 @@ from unittest.mock import patch
 
 from homeassistant.core import HomeAssistant, ServiceCall
 
-from custom_components.homekit_bed import sources
-from custom_components.homekit_bed.sources import InvertedSliderSource, SliderSource
+from custom_components.homekit_adjustable_bed import sources
+from custom_components.homekit_adjustable_bed.sources import InvertedSliderSource, SliderSource
 
 COVER = "cover.bed_back"
 

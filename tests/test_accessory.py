@@ -13,7 +13,7 @@ from pytest_homeassistant_custom_component.common import (
     async_fire_time_changed,
 )
 
-from custom_components.homekit_bed.accessory import (
+from custom_components.homekit_adjustable_bed.accessory import (
     POS_INCREASING,
     POS_STOPPED,
     BedAccessory,
@@ -62,7 +62,7 @@ async def bed(hass: HomeAssistant, tmp_path):
     hass.services.async_register("number", "set_value", _number_set)
     hass.services.async_register("button", "press", _press)
 
-    entry = MockConfigEntry(domain="homekit_bed", title="Bed")
+    entry = MockConfigEntry(domain="homekit_adjustable_bed", title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)
     driver = AccessoryDriver(
@@ -294,7 +294,7 @@ async def test_memory_unsaved_slot_notifies(hass, bed) -> None:
 
 def test_layout_matches_barloews_bed() -> None:
     """The observed tile: primary first, the rest alphabetical, rows of two."""
-    from custom_components.homekit_bed.layout import predicted_order
+    from custom_components.homekit_adjustable_bed.layout import predicted_order
 
     controls = [
         ("back", "Hoofdeinde"),
@@ -317,11 +317,11 @@ def test_layout_matches_barloews_bed() -> None:
 
 async def test_primary_can_be_any_control(hass, tmp_path) -> None:
     """Exactly one service is primary, also when it is a switch."""
-    from custom_components.homekit_bed.accessory import BedAccessory
+    from custom_components.homekit_adjustable_bed.accessory import BedAccessory
 
     hass.states.async_set("number.a", "0", POS_ATTRS)
     hass.states.async_set("button.f", "unknown")
-    entry = MockConfigEntry(domain="homekit_bed", title="Bed")
+    entry = MockConfigEntry(domain="homekit_adjustable_bed", title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)
     driver = AccessoryDriver(
@@ -346,7 +346,7 @@ async def test_primary_can_be_any_control(hass, tmp_path) -> None:
 
 async def test_light_fan_and_stateful_switch(hass, tmp_path) -> None:
     """Lightbulb/Fanv2 level services and a switch that mirrors real state."""
-    from custom_components.homekit_bed.accessory import BedAccessory
+    from custom_components.homekit_adjustable_bed.accessory import BedAccessory
 
     hass.states.async_set("number.light_level", "0", MASSAGE_ATTRS)
     hass.states.async_set("number.fan_level", "4", MASSAGE_ATTRS)
@@ -363,7 +363,7 @@ async def test_light_fan_and_stateful_switch(hass, tmp_path) -> None:
     hass.services.async_register("homeassistant", "turn_on", _rec)
     hass.services.async_register("homeassistant", "turn_off", _rec)
 
-    entry = MockConfigEntry(domain="homekit_bed", title="Bed")
+    entry = MockConfigEntry(domain="homekit_adjustable_bed", title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)
     driver = AccessoryDriver(
@@ -430,7 +430,7 @@ async def test_light_fan_and_stateful_switch(hass, tmp_path) -> None:
 
 
 async def test_stop_clears_queue_but_massage_toggle_not(hass, bed) -> None:
-    from custom_components.homekit_bed.const import CONTROLS_BY_KEY
+    from custom_components.homekit_adjustable_bed.const import CONTROLS_BY_KEY
 
     assert CONTROLS_BY_KEY["stop"].interrupts_motion
     assert not CONTROLS_BY_KEY["massage_toggle"].interrupts_motion
@@ -438,7 +438,7 @@ async def test_stop_clears_queue_but_massage_toggle_not(hass, bed) -> None:
 
 
 def test_homekit_name_sanitizes() -> None:
-    from custom_components.homekit_bed.layout import homekit_name
+    from custom_components.homekit_adjustable_bed.layout import homekit_name
 
     assert homekit_name("Massage aan/uit", "x") == "Massage aan uit"
     assert homekit_name("  -Licht!  ", "x") == "Licht"
@@ -463,7 +463,7 @@ async def test_bed_name_char_does_not_shift_iids(bed) -> None:
 
 async def test_inverted_slider(hass, tmp_path) -> None:
     """Inverted: flat bed shows 100 % (Open); HomeKit 70 % moves the bed to 30 %."""
-    from custom_components.homekit_bed.accessory import BedAccessory
+    from custom_components.homekit_adjustable_bed.accessory import BedAccessory
 
     hass.states.async_set(BACK, "0", POS_ATTRS)
     hass.states.async_set(HEAD_M, "2", MASSAGE_ATTRS)
@@ -473,7 +473,7 @@ async def test_inverted_slider(hass, tmp_path) -> None:
         calls.append(dict(call.data))
 
     hass.services.async_register("number", "set_value", _rec)
-    entry = MockConfigEntry(domain="homekit_bed", title="Bed")
+    entry = MockConfigEntry(domain="homekit_adjustable_bed", title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)
     driver = AccessoryDriver(
@@ -514,12 +514,12 @@ async def test_inverted_slider(hass, tmp_path) -> None:
 
 async def test_unknown_massage_is_off(hass, tmp_path) -> None:
     """ha-adjustable-bed reports massage as 'unknown' until set: show it as off."""
-    from custom_components.homekit_bed.accessory import BedAccessory
+    from custom_components.homekit_adjustable_bed.accessory import BedAccessory
 
     hass.states.async_set(BACK, "0", POS_ATTRS)
     hass.states.async_set(HEAD_M, "unknown", MASSAGE_ATTRS)
     hass.states.async_set(FOOT_M, "unknown", MASSAGE_ATTRS)
-    entry = MockConfigEntry(domain="homekit_bed", title="Bed")
+    entry = MockConfigEntry(domain="homekit_adjustable_bed", title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)
     driver = AccessoryDriver(

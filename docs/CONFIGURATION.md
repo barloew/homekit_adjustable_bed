@@ -104,5 +104,5 @@ restarting the accessory; the invisible bridge keeps the name it was paired with
 
 | Action | Effect |
 |---|---|
-| `homekit_bed.push_captions` | Sends all names to the Home app again |
-| `homekit_bed.reset_pairing` | Forgets all pairings and shows a new setup code |
+| `homekit_adjustable_bed.push_captions` | Sends all names to the Home app again |
+| `homekit_adjustable_bed.reset_pairing` | Forgets all pairings and shows a new setup code |
