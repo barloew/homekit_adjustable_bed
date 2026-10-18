@@ -28,7 +28,10 @@ def _setup(hass):
         model="JMC400",
     )
     kids = {}
-    for name, addr in (("Barloew's bed", "AA:AA:AA:AA:AA:01"), ("Snork Maiden's bed", "AA:AA:AA:AA:AA:02")):
+    for name, addr in (
+        ("Barloew's bed", "AA:AA:AA:AA:AA:01"),
+        ("Snork Maiden's bed", "AA:AA:AA:AA:AA:02"),
+    ):
         # A real HA 2026.9 child device, as ha-adjustable-bed creates them.
         kid = devreg.async_get_or_create_child(
             config_entry_id=entry.entry_id,

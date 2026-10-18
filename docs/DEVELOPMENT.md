@@ -91,8 +91,6 @@ What HACS checks on GitHub itself, to set once the repository is public:
   `adjustable-bed`);
 - issues enabled;
 - at least one GitHub release (a release, not only a tag), created after the workflows pass;
-- `documentation`, `issue_tracker` and `codeowners` in `manifest.json` pointing at the
-  repository and its owner;
 - for the sync workflow: *Settings → Actions → Allow GitHub Actions to create pull requests*.
 
 For the HACS default list, open a pull request to `hacs/default` once the HACS action and
