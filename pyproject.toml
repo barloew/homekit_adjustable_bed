@@ -1,12 +1,13 @@
 [project]
 name = "homekit-bed"
-version = "4.11.0"
+version = "4.11.1"
 description = "Publish an adjustable bed (ha-adjustable-bed) as one HomeKit accessory"
 requires-python = ">=3.14.2"
+license = "MIT"
 dependencies = [
     "HAP-python>=4.9.2",
-    "PyQRCode==1.2.1",
-    "base36==0.1.1",
+    "PyQRCode>=1.2.1",
+    "base36>=0.1.1",
 ]
 
 [project.optional-dependencies]
@@ -17,6 +18,7 @@ dev = [
     "pytest-homeassistant-custom-component>=0.13.206",
     "pytest-cov>=4.1.0",
     "pytest-xdist>=3.5.0",
+    "pillow>=11.0.0",
 ]
 
 # Tooling follows kristofferR/ha-adjustable-bed so both projects can be

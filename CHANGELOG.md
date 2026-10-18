@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.11.1
+- Brand images (icon and dark icon, 1x and 2x) in `brand/`, shown by Home Assistant 2026.3+ and
+  required by HACS.
+- Requirements `PyQRCode` and `base36` as minimum versions: hassfest of Home Assistant 2026.10
+  rejects pins of packages Home Assistant itself depends on.
+- MIT license; README icon; HACS checklist in the development docs.
+
 ## 4.11.0
 - `tools/sync_adjustable_bed.py`: fetches the latest Adjustable Bed release, reports new bed
   types, controls and `timed_move` motors, and updates names, timed motors, the test fixture and

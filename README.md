@@ -1,3 +1,5 @@
+<img src="custom_components/homekit_bed/brand/icon.png" alt="HomeKit Bed" width="96" align="right">
+
 # HomeKit Bed
 
 Publishes an adjustable bed from [Adjustable Bed](https://github.com/kristofferR/ha-adjustable-bed)

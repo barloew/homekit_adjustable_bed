@@ -17,9 +17,9 @@
   ],
   "requirements": [
     "HAP-python>=4.9.2",
-    "PyQRCode==1.2.1",
-    "base36==0.1.1"
+    "PyQRCode>=1.2.1",
+    "base36>=0.1.1"
   ],
   "single_config_entry": false,
-  "version": "4.11.0"
+  "version": "4.11.1"
 }

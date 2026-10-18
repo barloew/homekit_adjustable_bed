@@ -77,3 +77,24 @@ optional tag) and opens a pull request with the report when a new release is out
 2. Add the release to `CHANGELOG.md`.
 3. `git commit -m "chore: Bump version to X.Y.Z"`, `git tag vX.Y.Z`, push with tags.
 4. Create a GitHub release with **What's New** and **Bug Fixes**.
+
+## HACS
+
+Checked locally: hassfest (Home Assistant 2026.10) passes, and `tests/test_hacs_requirements.py`
+covers what HACS reads from the repository: `hacs.json`, the brand images in
+`custom_components/homekit_bed/brand/` (`icon.png` 256 px and `icon@2x.png` 512 px, with `dark_`
+variants for dark themes; sources in `docs/brand/`), unpinned requirements and the MIT license.
+
+What HACS checks on GitHub itself, to set once the repository is public:
+
+- a repository description and topics (for example `home-assistant`, `hacs`, `homekit`,
+  `adjustable-bed`);
+- issues enabled;
+- at least one GitHub release (a release, not only a tag), created after the workflows pass;
+- `documentation`, `issue_tracker` and `codeowners` in `manifest.json` pointing at the
+  repository and its owner;
+- for the sync workflow: *Settings → Actions → Allow GitHub Actions to create pull requests*.
+
+For the HACS default list, open a pull request to `hacs/default` once the HACS action and
+hassfest pass without ignores.
+
