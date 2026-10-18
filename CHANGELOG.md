@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.11.2
+- New brand icon: side view of a bed with a headboard, a box spring with a topper and the back
+  section raised.
+
 ## 4.11.1
 - Brand images (icon and dark icon, 1x and 2x) in `brand/`, shown by Home Assistant 2026.3+ and
   required by HACS.

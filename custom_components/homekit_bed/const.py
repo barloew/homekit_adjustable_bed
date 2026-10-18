@@ -7,7 +7,7 @@ from typing import Final
 
 DOMAIN: Final = "homekit_bed"
 # Keep equal to manifest.json and pyproject.toml (tests/test_version.py).
-VERSION: Final = "4.11.1"
+VERSION: Final = "4.11.2"
 
 # Config entry data
 CONF_BED_DEVICE: Final = "bed_device"
