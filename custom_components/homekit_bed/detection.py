@@ -221,6 +221,49 @@ _FALLBACK = {
     "select": (HK_SELECT, G_SETTINGS),
     "climate": (HK_CLIMATE, G_CLIMATE),
 }
+# Group of a key without a rule, from words in the key (first match wins).
+# Vendor-specific keys (vibradorm_app_*, sleeptracker_*, ...) then land in
+# the right form section; they stay hidden by default.
+_KEYWORD_GROUPS: tuple[tuple[re.Pattern, str], ...] = tuple(
+    (re.compile(pattern), group)
+    for pattern, group in (
+        # maintenance first: "save_memory" or "led_brightness_save" is no preset/light;
+        # "program" saves a position, except for a massage program
+        (
+            r"(^|_)(save|reset|refresh|query|firmware|wake|identify|detection|check|"
+            r"use_detected|sync_clock|clock|alarms?|calibrat\w*|installation|actuator_\d|"
+            r"module|control_side|motor_mode)(_|$)|(^|(?<!massage)_)program(_|$)",
+            G_SETTINGS,
+        ),
+        (r"(^|_)(massage|wave|\d+hz|wind_down|waist)(_|$)", G_MASSAGE),
+        (r"(^|_)(firmness|pressure|inflate|deflate|air_pump)(_|$)", G_FIRMNESS),
+        (r"(^|_)(fan|breeze|heat|thermal|cool|warm\w*)(_|$)", G_CLIMATE),
+        (
+            r"(^|_)(light|lights|lamp|led|mood|nightlight|floor|rgb|colou?r|brightness|"
+            r"intensity)(_|$)",
+            G_LIGHTING,
+        ),
+        (
+            r"(^|_)(preset|memory|flat|zero_g|lounge|anti_snore|incline|inclined|tv|home|zzz)"
+            r"(_|$)",
+            G_PRESETS,
+        ),
+        (r"(^|_)(up|down|union|lift|tilt|motor|motors)(_|$)", G_POSITIONS),
+    )
+)
+
+
+def _matches_keyword(base: str) -> bool:
+    return any(regex.search(base) for regex, _group in _KEYWORD_GROUPS)
+
+
+def _keyword_group(base: str, default: str) -> str:
+    for regex, group in _KEYWORD_GROUPS:
+        if regex.search(base):
+            return group
+    return default
+
+
 # Read-only entities are not controls.
 _IGNORED_DOMAINS = ("sensor", "binary_sensor")
 
@@ -243,6 +286,7 @@ class DetectedControl:
     name: str | None = None  # entity name without the device name
     catalog_key: str | None = None  # legacy control id (stable IIDs/captions)
     lost_alias: bool = False  # another entity took the legacy id
+    source: str = "rule"  # "rule", "keyword" (group from the key) or "fallback"
 
     @property
     def timed_motor(self) -> str | None:
@@ -319,7 +363,8 @@ def classify(domain: str, key: str) -> DetectedControl | None:
             )
     if domain not in _FALLBACK:
         return None
-    hk_type, group = _FALLBACK[domain]
+    hk_type, default_group = _FALLBACK[domain]
+    group = _keyword_group(base, default_group)
     return DetectedControl(
         entity_id="",
         key=key,
@@ -329,6 +374,7 @@ def classify(domain: str, key: str) -> DetectedControl | None:
         hk_type=hk_type,
         group=group,
         exposed=False,
+        source="keyword" if _matches_keyword(base) else "fallback",
     )
 
 

@@ -33,7 +33,9 @@ Assistant). Start with [docs/README.md](docs/README.md) and
   what it had after an update.
 - All user-visible text lives in `translations/*.json` (English source, Dutch); never put
   Dutch or English UI strings in Python. `strings.json` equals `en.json`. Regenerate control
-  names with `tools/gen_control_translations.py`.
+  names with `tools/sync_adjustable_bed.py --offline` (runs `gen_control_translations.py`).
+- New Adjustable Bed release: `tools/sync_adjustable_bed.py`, then review its report
+  (controls without a rule, renamed keys). Never import or run Adjustable Bed code in tools.
 - New detection rules need a case in `tests/test_bed_families.py` or `tests/test_detection.py`.
 
 ## Validation

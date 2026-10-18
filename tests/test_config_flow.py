@@ -89,7 +89,7 @@ async def test_full_flow(hass: HomeAssistant, mock_async_zeroconf) -> None:
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
     assert result["type"] is FlowResultType.FORM
-    import voluptuous as vol
+    from custom_components.homekit_bed.vol import vol
 
     for marker in result["data_schema"].schema:
         if marker == "bed_device":

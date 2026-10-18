@@ -17,7 +17,7 @@ User interface languages: English and Dutch.
 ## Requirements
 
 - Home Assistant **2026.9.0** or newer (Python 3.14)
-- [Adjustable Bed](https://github.com/kristofferR/ha-adjustable-bed) v4 with your bed set up
+- <!-- adjustable-bed-version -->[Adjustable Bed](https://github.com/kristofferR/ha-adjustable-bed) v4 with your bed set up (checked against v4.2.3, see [Supported beds](docs/SUPPORTED_BEDS.md))<!-- /adjustable-bed-version -->
 - A free TCP port for the accessory (default 21070), reachable from your Apple home hub
 
 ## Installation
@@ -36,6 +36,7 @@ User interface languages: English and Dutch.
 |---|---|
 | [Configuration](docs/CONFIGURATION.md) | The setup and options forms, naming, display, layout, pairing |
 | [Detection](docs/DETECTION.md) | How bed entities map to HomeKit controls, defaults per group |
+| [Supported beds](docs/SUPPORTED_BEDS.md) | All bed types of the checked Adjustable Bed release |
 | [Home app behaviour](docs/HOME_APP.md) | Captions, order, colour button, open/closed, renames |
 | [Architecture](docs/ARCHITECTURE.md) | Why an own HAP accessory, modules, data model |
 | [Development](docs/DEVELOPMENT.md) | Environment, tests, translations, CI, releases |

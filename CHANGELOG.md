@@ -1,5 +1,25 @@
 # Changelog
 
+## 4.11.0
+- `tools/sync_adjustable_bed.py`: fetches the latest Adjustable Bed release, reports new bed
+  types, controls and `timed_move` motors, and updates names, timed motors, the test fixture and
+  the documentation; a weekly workflow opens a pull request with the report.
+- Vendor controls without a rule are grouped by the words in their key (massage, lighting,
+  firmness, climate, quick actions, adjustable sections, settings) instead of all under
+  Settings; still off by default.
+- Docs: [Supported beds](docs/SUPPORTED_BEDS.md), generated from the checked release.
+- Synced with Adjustable Bed v4.2.3.
+  - New bed types: Adjustable bed (Lumbar) app, AdjustableM5X4 app (explicit profile),
+    AdjustableM5X5 app (CB25 / F23 / kneading), Best Mattress app (Richmat), Blvd Home app
+    (Richmat), Customatic Z-Series app, FSM Relax app (explicit chair/bed profile), FurniMove / OKIN
+    Smart Remote (choose handset ID), HARMONY app (Richmat), Idealbed app (Richmat), Jordan's
+    Serenity app, Jordan's Tranquil app, Limoss Remote app (bed / chair), Logicdata Sleep Smart air
+    mattress pump, Motion Bed app, Revive Control app (Richmat), SIMMONS app, Tempur Sleeptracker-AI
+    (ProSmart / ActiveBreeze processor), V-MAT Basic app, Vibradorm apps: VMAT, Caresse Diamant or
+    Werkmeister.
+  - New controls named and grouped: 255 (adjustable sections 70, settings 60, massage 54, lighting
+    42, quick actions 22, firmness 4, climate 3).
+
 ## 4.10.0
 - Massage: switches for massage buttons and massage sliders (only for kinds the bed has); each
   shows or hides its controls in the form and in HomeKit.

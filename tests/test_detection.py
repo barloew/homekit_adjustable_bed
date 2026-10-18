@@ -181,9 +181,11 @@ async def test_auto_registration_merges_manual_lamp(hass: HomeAssistant) -> None
 async def test_select_as_switch_group(hass: HomeAssistant, tmp_path) -> None:
     hass.states.async_set("select.preset", "Flat", {"options": ["Flat", "Zero G", "Read"]})
     calls = []
-    hass.services.async_register(
-        "select", "select_option", lambda call: calls.append(dict(call.data))
-    )
+
+    async def _select_option(call) -> None:
+        calls.append(dict(call.data))
+
+    hass.services.async_register("select", "select_option", _select_option)
     entry = MockConfigEntry(domain=DOMAIN, title="Bed")
     entry.add_to_hass(hass)
     loader = await hass.async_add_executor_job(get_loader)

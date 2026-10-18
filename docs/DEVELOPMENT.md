@@ -25,17 +25,50 @@ CI (`.github/workflows/validate.yml`) runs the same plus HACS and hassfest valid
 | `test_combined_bed.py`, `test_devices.py` | Combined beds with real child devices |
 | `test_rename_reload.py`, `test_pairing_flow.py` | HAP server with real sockets, pairing |
 | `test_translations.py`, `test_version.py` | Translation completeness, one version everywhere |
+| `test_adjustable_bed_sync.py` | The integration against the synced Adjustable Bed release |
 
 ## Translations
 
 All user-visible text lives in `translations/<lang>.json`; `strings.json` is a copy of `en.json`.
-Names of all detectable controls are generated from Adjustable Bed's English entity names:
+Names of all detectable controls are generated from Adjustable Bed's English entity names by
+`tools/gen_control_translations.py`; the sync below runs it.
+
+## Keeping up with Adjustable Bed
+
+`tools/sync_adjustable_bed.py` brings the integration up to date with the latest Adjustable Bed
+release:
 
 ```sh
-python tools/gen_control_translations.py <ha-adjustable-bed>/custom_components/adjustable_bed/translations/en.json
+uv run --no-sync python tools/sync_adjustable_bed.py            # latest release + checks
+uv run --no-sync python tools/sync_adjustable_bed.py --check    # is there a newer release?
+uv run --no-sync python tools/sync_adjustable_bed.py --ref v4.2.3 --force
+uv run --no-sync python tools/sync_adjustable_bed.py --offline  # after changing detection.py
+uv run --no-sync python tools/sync_adjustable_bed.py --bump minor
 ```
 
-Run it after Adjustable Bed adds entities, and after changing groups in `detection.py`.
+What it does:
+
+1. Finds the latest release tag (`git ls-remote`) and reads that release from a blobless clone
+   in `.cache/`. Adjustable Bed's code is parsed (`ast`, `json`, `yaml.safe_load`), never
+   imported or run.
+2. Compares it with the previous sync (`tests/fixtures/adjustable_bed.json`; `--since` picks
+   another release): bed types, controllable entities, `timed_move` motors and actions added,
+   removed or renamed.
+3. Classifies every entity with `detection.py`: by a rule, by a word in the key (vendor
+   controls without a rule, off by default) or by domain only. Controls without a rule are
+   listed for review: add a rule (with a test) when one deserves a better type or should be on
+   by default; probably renamed keys need a migration in `controls.migrate_renamed`.
+4. Regenerates the form and caption names (en, nl), `TIMED_MOTORS` in `const.py`, the fixture,
+   [Supported beds](SUPPORTED_BEDS.md), the checked version in the README and a
+   `CHANGELOG.md` entry.
+5. Runs ruff, pyright and pytest (`--no-checks` skips them).
+
+The report is printed and saved as `.cache/sync_report.md`. `tests/test_adjustable_bed_sync.py`
+checks the integration against the fixture: every entity has a HomeKit type and a name in its
+group, the timed motors match, and the generated documentation is current.
+
+`.github/workflows/sync-adjustable-bed.yml` runs the sync every Monday (and on demand, with an
+optional tag) and opens a pull request with the report when a new release is out.
 
 ## Releases
 

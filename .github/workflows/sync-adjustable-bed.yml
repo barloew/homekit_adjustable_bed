@@ -1,0 +1,55 @@
+# Weekly: sync with the latest Adjustable Bed release and open a pull request with the
+# report (new bed types, new controls, controls without a rule to review).
+name: Sync Adjustable Bed
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Adjustable Bed tag (empty = latest release)
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.14"
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Check for a new release
+        id: check
+        run: |
+          if uv run --no-sync python tools/sync_adjustable_bed.py --check; then
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Sync
+        if: steps.check.outputs.new == 'true' || inputs.ref != ''
+        run: |
+          uv run --no-sync python tools/sync_adjustable_bed.py ${{ inputs.ref && format('--ref {0} --force', inputs.ref) || '' }} --no-checks
+          uvx ruff@0.15.16 format custom_components tests tools
+          uv run --no-sync pytest -q -n auto
+      - name: Open pull request
+        if: steps.check.outputs.new == 'true' || inputs.ref != ''
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: sync/adjustable-bed
+          commit-message: "feat: Sync with the latest Adjustable Bed release"
+          title: "Sync with the latest Adjustable Bed release"
+          body-path: .cache/sync_report.md
+          add-paths: |
+            CHANGELOG.md
+            README.md
+            custom_components/homekit_bed
+            docs/SUPPORTED_BEDS.md
+            tests/fixtures/adjustable_bed.json

@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING, Any
 
-import voluptuous as vol
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
@@ -75,6 +74,7 @@ from .devices import child_device_ids, related_device_ids
 from .labels import async_control_names, async_default_labels, async_group_names
 from .layout import preview_markdown
 from .server import async_port_is_free
+from .vol import vol
 
 SECTION_CAPTIONS = "captions"
 SECTION_LAYOUT = "layout"

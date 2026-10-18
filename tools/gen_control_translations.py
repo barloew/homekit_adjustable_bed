@@ -187,7 +187,9 @@ def main(source: str) -> None:
                 alt = f"{domain}_{key}" if key in CATALOG_IDS else key
                 names.setdefault(alt, (control.group, str(info.get("name") or key)))
                 continue
-            name = str(info.get("name") or key).replace("{action}", "Action")
+            name = str(info.get("name") or key)
+            if "{" in name:  # runtime placeholder such as "{action}": name it after the key
+                name = key.replace("_", " ").capitalize()
             names.setdefault(key, (control.group, name))
     for lang in ("en", "nl"):
         path = BASE / "translations" / f"{lang}.json"
@@ -242,6 +244,10 @@ def main(source: str) -> None:
                 sections[group].setdefault("data_description", {})[key] = text[key][1]
         for key in ("captions", "display", "layout"):
             sections[key]["name"] = with_icon(key, text[key])
+        # A control whose group changed (detection rules) moves to its new section.
+        for group in GROUPS:
+            for key in names:
+                sections[group]["data"].pop(key, None)
         # Catalog controls (hand-written names) into their detection group.
         for key, group in catalog_group.items():
             sections[group]["data"][key] = catalog_names[key]

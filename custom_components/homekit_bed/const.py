@@ -7,7 +7,7 @@ from typing import Final
 
 DOMAIN: Final = "homekit_bed"
 # Keep equal to manifest.json and pyproject.toml (tests/test_version.py).
-VERSION: Final = "4.10.0"
+VERSION: Final = "4.11.0"
 
 # Config entry data
 CONF_BED_DEVICE: Final = "bed_device"
@@ -250,6 +250,7 @@ CONF_TIMED: Final = "timed_moves"
 TIMED_MAX_SECONDS: Final = 30.0  # ha-adjustable-bed accepts 100-30000 ms
 # Motors the timed_move action accepts.
 TIMED_MOTORS: Final = (
+    "tv_lift",
     "back",
     "right_back",
     "legs",
@@ -259,7 +260,6 @@ TIMED_MOTORS: Final = (
     "lumbar",
     "bed_height",
     "stair",
-    "tv_lift",
 )
 
 # Blinds sliders shown upside down in HomeKit (list of control keys).
