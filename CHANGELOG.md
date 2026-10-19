@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Synced with Adjustable Bed v4.2.4.
+
 ## 5.0.0
 - Renamed to **HomeKit Adjustable Bed**; the integration domain is now `homekit_adjustable_bed`
   (actions `homekit_adjustable_bed.reset_pairing` and `homekit_adjustable_bed.push_captions`).

@@ -1,7 +1,7 @@
 {
- "ref": "v4.2.3",
- "version": "4.2.3",
- "commit": "55a497d685efbd3fb4d1d140419f48cf98d499a4",
+ "ref": "v4.2.4",
+ "version": "4.2.4",
+ "commit": "3bbe58262ed902a3892153b08e9c096cd67cd0da",
  "bed_types": {
   "adjustable_lumbar": "Adjustable bed (Lumbar) app",
   "bedtech": "BedTech",
