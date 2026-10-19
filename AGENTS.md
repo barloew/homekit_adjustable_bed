@@ -50,6 +50,7 @@ uv run --no-sync pytest
 
 ## Releases
 
-Version in `manifest.json`, `pyproject.toml` and `const.py`; changelog entry; commit
-`chore: Bump version to X.Y.Z`; tag `vX.Y.Z`; GitHub release with **What's New** and
-**Bug Fixes** (no "Upgrading" section).
+Version in `manifest.json`, `pyproject.toml` and `const.py`; changelog section `## X.Y.Z`
+(with `### What's New` and `### Bug Fixes` where useful, no "Upgrading" section); commit
+`chore: Bump version to X.Y.Z`; tag `vX.Y.Z` and push it. The release workflow creates the
+GitHub release from the changelog.

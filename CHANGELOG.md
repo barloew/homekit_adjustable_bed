@@ -2,14 +2,28 @@
 
 ## Unreleased
 - Synced with Adjustable Bed v4.2.4.
+- Release workflow: every version tag gets a GitHub release with the notes from this
+  changelog (`tools/release_notes.py`).
 
 ## 5.0.0
+First public release: one HomeKit accessory per Adjustable Bed device, with exact positions and
+named controls in a single tile.
+
+### What's New
 - Renamed to **HomeKit Adjustable Bed**; the integration domain is now `homekit_adjustable_bed`
   (actions `homekit_adjustable_bed.reset_pairing` and `homekit_adjustable_bed.push_captions`).
-  Breaking: remove the old HomeKit Bed entries and the `homekit_bed` folder first, then set up
-  the beds again and pair them anew in the Home app.
-- README: why this integration (what it adds to the HomeKit Bridge route) and how it runs in
-  step with Adjustable Bed.
+  Coming from the earlier `homekit_bed`: remove its entries and folder first, then set up the
+  beds again and pair them anew in the Home app.
+- README: what the integration adds to the HomeKit Bridge route, and how it runs in step with
+  Adjustable Bed.
+- `tools/sync_adjustable_bed.py` and a weekly workflow follow every Adjustable Bed release.
+- Vendor controls without a rule are grouped by keyword; [Supported beds](https://github.com/barloew/homekit_adjustable_bed/blob/main/docs/SUPPORTED_BEDS.md)
+  lists all bed types of the checked release.
+- Brand icons for Home Assistant 2026.3+ and HACS.
+
+### Bug Fixes
+- Requirements as minimum versions, as hassfest of Home Assistant 2026.10 requires.
+- Works with probatio (Home Assistant 2026.10) and voluptuous (2026.9).
 
 ## 4.11.2
 - New brand icon: side view of a bed with a headboard, a box spring with a topper and the back

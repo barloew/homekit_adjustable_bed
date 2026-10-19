@@ -73,10 +73,16 @@ optional tag) and opens a pull request with the report when a new release is out
 ## Releases
 
 1. Set the version in `manifest.json`, `pyproject.toml` and `const.py` (`tests/test_version.py`
-   checks they match).
-2. Add the release to `CHANGELOG.md`.
-3. `git commit -m "chore: Bump version to X.Y.Z"`, `git tag vX.Y.Z`, push with tags.
-4. Create a GitHub release with **What's New** and **Bug Fixes**.
+   checks they match), or let `tools/sync_adjustable_bed.py --bump patch|minor` do it.
+2. Rename `## Unreleased` in `CHANGELOG.md` to `## X.Y.Z`, optionally with `### What's New`
+   and `### Bug Fixes` subsections (`tests/test_release_notes.py` checks the current version
+   has notes).
+3. `git commit -m "chore: Bump version to X.Y.Z"`, `git tag vX.Y.Z`,
+   `git push && git push --tags`.
+4. `.github/workflows/release.yml` checks the tag against the manifest and creates the GitHub
+   release with the notes of that version (`tools/release_notes.py`). After improving the
+   notes in the changelog, publish them again with
+   `gh workflow run release.yml -f tag=vX.Y.Z`.
 
 ## HACS
 
