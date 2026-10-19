@@ -113,7 +113,7 @@ possible, and to be adopted into it without a migration of style or tooling:
 ## Requirements
 
 - Home Assistant **2026.9.0** or newer (Python 3.14)
-- <!-- adjustable-bed-version -->[Adjustable Bed](https://github.com/kristofferR/ha-adjustable-bed) v4 with your bed set up (checked against v4.2.3, see [Supported beds](docs/SUPPORTED_BEDS.md))<!-- /adjustable-bed-version -->
+- <!-- adjustable-bed-version -->[Adjustable Bed](https://github.com/kristofferR/ha-adjustable-bed) v4 with your bed set up (checked against v4.2.4, see [Supported beds](docs/SUPPORTED_BEDS.md))<!-- /adjustable-bed-version -->
 - A free TCP port for the accessory (default 21070), reachable from your Apple home hub
 
 ## Installation
