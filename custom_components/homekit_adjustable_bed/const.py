@@ -260,6 +260,14 @@ TIMED_MOTORS: Final = (
     "lumbar",
     "bed_height",
     "stair",
+    "m1x12_part_1",
+    "m1x12_part_2",
+    "m1x12_part_4",
+    "m1x12_part_8",
+    "m1x12_part_16",
+    "elevate_actuator_1",
+    "elevate_actuator_2",
+    "elevate_both",
 )
 
 # Blinds sliders shown upside down in HomeKit (list of control keys).
