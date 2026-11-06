@@ -3,23 +3,12 @@
 ## Unreleased
 - Release workflow: every version tag gets a GitHub release with the notes from this
   changelog (`tools/release_notes.py`).
-- Synced with Adjustable Bed v4.3.0.
-  - New bed types: Adjustable Comfort M1X12 app (CB25 / F23 / kneading), AdjustaMattress app (seven
-    product layouts), BedSense app (com.fenmenbielei.bedsense), BF (com.BF app, three motors),
-    Casper Base app (select product), Casper Base remote finder (RCRM handset), Casper Base sleep
-    sensor (HJ- / SXB), Casper Base sleep sensor (RM- / MM), Cherish (com.okin.ore.cherish app),
-    Comfort Enhancements app (choose MC2/MC3/MC4/MC5), Ergo Slim, Ergomotion (app), Ergomotion 4.0
-    app (explicit product), eShine app (E2000 / E3000 / E3100 / E5000), Eshine app (E6000),
-    Glideaway Motion / Montion app (400 / 450 / 500 / 600), GM Control (exact app product), GM
-    Control sleep module (MM), GM Control sleep module (SXB), Good Vibe Sleep app (choose product or
-    sleep sensor), HJBed app (choose the exact product), ISleep (com.kaidi_test4), OKIN SleepEase
-    (DoubleSleep / XiaoBao), Omazz Adjusto III, Q-Plus Adjustable Remote, Reverie Pairlink (R510L /
-    Harmoniq), ROW Control, Serta MP Remote, Sleepy's Elite app (explicit selector), TEMPUR AU,
-    Tempur Curve.
-  - New controls named and grouped: 287 (settings 119, massage 78, lighting 34, adjustable sections
-    32, quick actions 24).
-  - Timed adjustments for `m1x12_part_1`, `m1x12_part_2`, `m1x12_part_4`, `m1x12_part_8`,
-    `m1x12_part_16`, `elevate_actuator_1`, `elevate_actuator_2`, `elevate_both`.
+- Synced with Adjustable Bed v4.4.2.
+  - New bed types: Avocado Eco Base / CoasterSleep / Forty Winks / Milemont / Superior, BedJet
+    PowerLayer adjustable frame, Hush Base app (select product), Hush Base remote finder (RCRM
+    handset), Hush Base sleep sensor (HJ / SXB), Hush Base sleep sensor (RM / MM), MotoMotion app
+    (exact Bluetooth name).
+  - New controls named and grouped: 25 (settings 24, adjustable sections 1).
 
 ## 5.0.0
 First public release: one HomeKit accessory per Adjustable Bed device, with exact positions and
